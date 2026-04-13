@@ -1,4 +1,5 @@
-export { auth as default } from "@/auth";
+import { auth } from "@/auth";
+export const proxy = auth;
 
 // Protect dashboard and admin routes
 export const config = {
