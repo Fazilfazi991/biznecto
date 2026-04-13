@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Navy (Biznecto logo #0A1F44) */
+  --color-ink: #0a1f44;
+  --color-ink-2: #0d2654;
+  --color-ink-3: #1a3a6b;
+  
+  /* Brand Teal/Green */
+  --color-teal: #00b89c;
+  --color-teal-dark: #009e87;
+  --color-teal-glass: rgba(0, 184, 156, 0.1);
+  --color-teal-border: rgba(0, 184, 156, 0.22);
+  
+  /* Accent Colors */
+  --color-amber: #f59e0b;
+  --color-coral: #ef4444;
+  --color-blue: #1a56db;
+  --color-purple: #7c3aed;
+  --color-green: #16a34a;
+  
+  /* Neutrals */
+  --color-sand: #f5f7fa;
+  --color-sand-2: #eaecf2;
+  --color-border-brand: #dde2ed;
+  --color-border-brand-2: #c6cedd;
+  
+  /* Text Colors */
+  --color-body: #3d4f6a;
+  --color-muted: #617090;
+  --color-hint: #8fa0bc;
+
+  /* Typography */
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-serif: "Fraunces", Georgia, serif;
+
+  /* Radius & Shadows */
+  --radius-brand: 8px;
+  --radius-brand-m: 14px;
+  --radius-brand-l: 20px;
+  --radius-brand-x: 28px;
+  
+  --shadow-brand: 0 2px 12px rgba(10, 31, 68, 0.08);
+  --shadow-brand-hover: 0 12px 40px rgba(10, 31, 68, 0.13);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: var(--color-ink);
+}
+
+body {
+  color: var(--color-body);
+  background: var(--background);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ─── TYPOGRAPHY HELPERS ─── */
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-teal);
+  margin-bottom: 10px;
+}
+
+/* Animations from HTML */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.22s ease forwards;
+}
+
+@keyframes pillDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.animate-pill-dot {
+  animation: pillDot 2.2s infinite;
+}

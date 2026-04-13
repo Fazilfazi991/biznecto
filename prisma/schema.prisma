@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("SUPPLIER") // BUYER or SUPPLIER
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+
+  requirements Requirement[]
+}
+
+model Company {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  location    String?
+  logoUrl     String?
+  tags        String   // comma-separated
+  products    String   // comma-separated
+  isPremium   Boolean  @default(false)
+  isVerified  Boolean  @default(false)
+  
+  users       User[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Requirement {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  quantity     String
+  budget       String?
+  deadline     String?
+  tags         String   // comma-separated
+  status       String   @default("Active") // Active, Urgent, Closed
+  buyerDetails String
+  contactName  String?
+  contactEmail String?
+  contactPhone String?
+
+  author       User     @relation(fields: [authorId], references: [id])
+  authorId     String
+
+  responses    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
