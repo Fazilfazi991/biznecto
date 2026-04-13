@@ -1,9 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Standalone output for self-hosted deployments (Hostinger, VPS, etc.)
-  output: "standalone",
-
   // Allow images from external sources
   images: {
     remotePatterns: [
@@ -12,7 +9,7 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // Silence Prisma warnings in production
+  // Silence Prisma/bcrypt warnings during Vercel builds
   serverExternalPackages: ["@prisma/client", "bcryptjs"],
 };
 
