@@ -1,10 +1,4 @@
-import { withAuth } from "next-auth/middleware";
-
-export default withAuth({
-  pages: {
-    signIn: "/login",
-  },
-});
+export { auth as default } from "@/auth";
 
 // Protect dashboard and admin routes
 export const config = {

@@ -12,7 +12,7 @@ export function Footer() {
           {/* Column 1: Brand & Contact */}
           <div className="flex flex-col gap-5">
             <Link href="/" className="inline-flex bg-white px-4 py-2 rounded-lg self-start shadow-sm hover:opacity-95 transition-opacity">
-              <img src="/logo.png" alt="Biznecto" className="h-[40px] md:h-[48px] w-auto object-contain" style={{ imageRendering: 'high-quality' }} />
+              <img src="/logo.png" alt="Biznecto" className="h-[40px] md:h-[48px] w-auto object-contain" />
             </Link>
             <p className="text-[13px] text-white/50 leading-relaxed mb-1 pr-6">
               Connect globally, direct and seamlessly. The platform where B2B buyers and suppliers find exactly what they need.

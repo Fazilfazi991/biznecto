@@ -24,7 +24,7 @@ export function Navbar() {
       {/* ─── TOP NAV (Desktop & Global Header) ─── */}
       <nav className="fixed top-0 left-0 right-0 z-[300] h-[72px] bg-white/95 backdrop-blur-[18px] border-b border-border-brand flex items-center justify-between px-4">
         <Link href="/" className="flex items-center no-underline cursor-pointer group">
-          <img src="/logo.png" alt="Biznecto" className="h-[40px] md:h-[52px] w-auto object-contain drop-shadow-sm" style={{ imageRendering: 'high-quality' }} />
+          <img src="/logo.png" alt="Biznecto" className="h-[40px] md:h-[52px] w-auto object-contain drop-shadow-sm" />
         </Link>
         
         <div className="hidden md:flex gap-1">
