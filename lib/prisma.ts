@@ -11,10 +11,6 @@ const getPrisma = () => {
 
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
-    // Return a dummy client or throw a more descriptive error if we're in production
-    if (process.env.NODE_ENV === "production") {
-      throw new Error("DATABASE_URL is not defined");
-    }
     return new PrismaClient();
   }
 
