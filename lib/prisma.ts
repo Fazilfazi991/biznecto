@@ -6,12 +6,20 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-const getPrisma = () => {
-  if (globalForPrisma.prisma) return globalForPrisma.prisma;
-
+const createPrismaClient = (): PrismaClient => {
   const connectionString = process.env.DATABASE_URL;
+  
   if (!connectionString) {
-    return new PrismaClient();
+    // During build, return a proxy that only throws if we actually try to query.
+    // This allows the build to finish while guarding against dev errors.
+    return new Proxy({} as PrismaClient, {
+      get(target, prop) {
+        if (typeof prop === 'string' && prop !== 'then' && prop !== 'constructor') {
+          console.warn(`Prisma accessed but DATABASE_URL is missing. (Property: ${prop})`);
+        }
+        return (target as any)[prop];
+      }
+    });
   }
 
   const pool = new Pool({ connectionString });
@@ -25,4 +33,10 @@ const getPrisma = () => {
   return client;
 };
 
-export const prisma = getPrisma();
+// Use a lazy getter so we NEVER instantiate during build evaluation
+export const prisma = new Proxy({} as PrismaClient, {
+  get(target, prop) {
+    const client = globalForPrisma.prisma ?? createPrismaClient();
+    return (client as any)[prop];
+  }
+});
