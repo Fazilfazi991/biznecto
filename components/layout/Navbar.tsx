@@ -17,6 +17,7 @@ export function Navbar() {
     { name: "Directory", href: "/directory", icon: Search },
     { name: "Requirements", href: "/requirements", icon: ClipboardList },
     { name: "Pricing", href: "/pricing", icon: CreditCard },
+    { name: "Insights", href: "/insights", icon: User },
   ];
 
   return (
@@ -101,7 +102,7 @@ export function Navbar() {
               )}
             >
               <Icon size={18} />
-              <span>{link.name === "Requirements" ? "Needs" : link.name === "Directory" ? "Search" : link.name}</span>
+              <span>{link.name === "Requirements" ? "Needs" : link.name === "Insights" ? "Guides" : link.name === "Directory" ? "Search" : link.name}</span>
             </Link>
           )
         })}

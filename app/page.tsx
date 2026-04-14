@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Search, MapPin, CheckCircle2, AlertTriangle, MessageCircle, ArrowRight, ArrowUpRight, Leaf, Coffee, Laptop, HeartPulse, HardHat, Zap, Shirt } from "lucide-react";
 import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
+import { InsightsSection } from "@/components/home/InsightsSection";
 
 export default function Home() {
   return (
@@ -407,6 +408,8 @@ export default function Home() {
         </div>
       </div>
 
+      <InsightsSection />
+      
       {/* 🟠 TRADE SHOWS (Moved down, minimal) */}
       <div className="py-[clamp(40px,6vw,72px)] bg-sand border-t border-border-brand text-center">
         <div className="max-w-[1100px] mx-auto px-4">
