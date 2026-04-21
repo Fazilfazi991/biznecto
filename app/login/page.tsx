@@ -1,9 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,6 +9,7 @@ export default function LoginPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,11 +19,16 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
+    
+    // Normalize email for login
+    const normalizedEmail = form.email.trim().toLowerCase();
+    
     const res = await signIn("credentials", {
-      email: form.email,
+      email: normalizedEmail,
       password: form.password,
       redirect: false,
     });
+    
     setLoading(false);
     if (res?.error) {
       setError("Invalid email or password.");
@@ -106,14 +109,25 @@ export default function LoginPage() {
                       className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
                     />
                   </div>
-                  <div className="flex flex-col gap-1.5">
+                  <div className="flex flex-col gap-1.5 relative">
                     <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Password</label>
-                    <input
-                      name="password" type="password" required
-                      value={form.password} onChange={handleChange}
-                      placeholder="Enter your password"
-                      className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
-                    />
+                    <div className="relative">
+                      <input
+                        name="password" 
+                        type={showPassword ? "text" : "password"} 
+                        required
+                        value={form.password} onChange={handleChange}
+                        placeholder="Enter your password"
+                        className="w-full border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-teal transition-colors"
+                      >
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
                   </div>
                   {error && <p className="text-red-500 text-[12px] font-medium">{error}</p>}
                   <button

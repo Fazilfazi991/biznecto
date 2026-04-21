@@ -29,7 +29,8 @@ export default function Home() {
           </div>
 
           <h1 className="font-sans font-extrabold text-[clamp(28px,6.5vw,58px)] text-white leading-[1.1] tracking-[-0.5px] mb-[15px]">
-            Find Verified Global Suppliers & <br/>
+            Find verified <br/>
+            Global Suppliers & <br/>
             <span className="text-teal font-bold">Get Business Leads</span>
           </h1>
           
