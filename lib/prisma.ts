@@ -15,6 +15,7 @@ function createPrismaClient(): PrismaClient {
 
   const pool = new Pool({
     connectionString,
+    connectionTimeoutMillis: 10000,
     ssl: connectionString.includes("sslmode=require") || connectionString.includes("supabase")
       ? { rejectUnauthorized: false }
       : undefined,
