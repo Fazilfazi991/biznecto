@@ -5,12 +5,19 @@ import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 
 export async function createSupplierAccount(formData: FormData) {
-  try {
-    if (!process.env.DATABASE_URL) {
-      return { success: false, error: "Database not configured. Please set DATABASE_URL in Vercel environment variables." };
-    }
+  // Hard 15-second timeout to prevent "stuck" UI
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("Database connection timed out. Check your connection string.")), 15000)
+  );
 
-    const companyName = formData.get("companyName") as string;
+  try {
+    const result = await Promise.race([
+      (async () => {
+        if (!process.env.DATABASE_URL) {
+          return { success: false, error: "Database not configured." };
+        }
+
+        const companyName = formData.get("companyName") as string;
     const description = formData.get("description") as string;
     const location = formData.get("location") as string;
     const tagsString = formData.get("tags") as string;
@@ -54,10 +61,17 @@ export async function createSupplierAccount(formData: FormData) {
       },
     });
 
-    revalidatePath("/directory");
-    return { success: true, companyName, email, password };
+
+        revalidatePath("/directory");
+        return { success: true, companyName, email, password };
+      })(),
+      timeoutPromise
+    ]) as any;
+
+    return result;
   } catch (error: any) {
     console.error("Error creating supplier account:", error);
     return { success: false, error: error.message };
   }
 }
+
