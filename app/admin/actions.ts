@@ -6,6 +6,10 @@ import { revalidatePath } from "next/cache";
 
 export async function createSupplierAccount(formData: FormData) {
   try {
+    if (!process.env.DATABASE_URL) {
+      return { success: false, error: "Database not configured. Please set DATABASE_URL in Vercel environment variables." };
+    }
+
     const companyName = formData.get("companyName") as string;
     const description = formData.get("description") as string;
     const location = formData.get("location") as string;
