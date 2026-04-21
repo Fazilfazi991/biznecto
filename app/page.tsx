@@ -426,28 +426,7 @@ export default function Home() {
 
       
       
-      {/* 🟠 TRADE SHOWS (Moved down, minimal) */}
-      <div className="py-[clamp(40px,6vw,72px)] bg-sand border-t border-border-brand text-center">
-        <div className="max-w-[1100px] mx-auto px-4">
-          <div className="text-[10px] font-semibold tracking-[2px] uppercase text-teal mb-[10px]">Upcoming Events</div>
-          <h2 className="font-sans font-extrabold text-[clamp(22px,3.5vw,34px)] text-ink tracking-[-0.3px] leading-[1.15] mb-[20px]">
-            Trade Show Calendar
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[10px]">
-            {["Gulfood 2026", "GITEX Global 2025", "Arab Health 2026", "ADIPEC 2025"].map(p => (
-              <div key={p} className="bg-white border border-border-brand rounded-brand-m p-[16px] text-left transition-all hover:border-blue">
-                <div className="font-serif font-semibold text-[14px] text-ink mb-[8px] tracking-[-0.1px]">{p}</div>
-                <div className="text-[11px] text-muted">Dubai / Abu Dhabi, UAE</div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-4">
-            <Link href="/trade-shows" className="text-blue text-[13px] font-semibold hover:underline">
-              Browse full calendar →
-            </Link>
-          </div>
-        </div>
-      </div>
+      
 
       <FloatingWhatsApp />
     </main>
