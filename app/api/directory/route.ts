@@ -14,14 +14,16 @@ export async function GET(req: NextRequest) {
           q ? {
             OR: [
               { name: { contains: q, mode: "insensitive" } },
-              { products: { contains: q, mode: "insensitive" } },
+              { products_legacy: { contains: q, mode: "insensitive" } },
               { tags: { contains: q, mode: "insensitive" } },
               { description: { contains: q, mode: "insensitive" } },
+              { items: { some: { name: { contains: q, mode: "insensitive" } } } },
             ],
           } : {},
           location ? { location: { contains: location, mode: "insensitive" } } : {},
         ],
       },
+      include: { items: true },
       orderBy: [{ isPremium: "desc" }, { isVerified: "desc" }, { createdAt: "desc" }],
     });
 
@@ -47,7 +49,7 @@ export async function POST(req: NextRequest) {
         description: description || "",
         location: location || "",
         tags: Array.isArray(tags) ? tags.join(",") : tags || "",
-        products: Array.isArray(products) ? products.join(",") : products || "",
+        products_legacy: Array.isArray(products) ? products.join(",") : products || "",
       },
     });
 
