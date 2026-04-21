@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, Users, ShieldAlert, DollarSign, LogOut } from "lucide-react";
+import { Activity, PlusCircle, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -11,10 +11,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const navItems = [
     { name: "Overview", href: "/admin", icon: Activity },
-    { name: "Add Listing", href: "/admin/listings/new", icon: Activity },
-    { name: "Signups", href: "/admin/users", icon: Users },
-    { name: "Requirement Moderation", href: "/admin/moderation", icon: ShieldAlert },
-    { name: "Revenue", href: "/admin/revenue", icon: DollarSign },
+    { name: "Add Supplier", href: "/admin/listings/new", icon: PlusCircle },
   ];
 
   return (
