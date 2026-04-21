@@ -98,9 +98,9 @@ export default function LoginPage() {
 
                 <form onSubmit={handleLogin} className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Email</label>
+                    <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Email or Username</label>
                     <input
-                      name="email" type="email" required
+                      name="email" type="text" required
                       value={form.email} onChange={handleChange}
                       placeholder="you@company.com"
                       className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
