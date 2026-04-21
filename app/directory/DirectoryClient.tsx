@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, MapPin, Building2, Lock, Filter } from "lucide-react";
+import { Search, MapPin, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { MOCK_COMPANIES } from "@/lib/mockData";
 
 // Inline Verified Badge icon
 function CheckBadge() {
@@ -23,8 +22,8 @@ export default function DirectoryClient({ dbCompanies }: { dbCompanies: any[] })
     "Energy", "Construction", "Agriculture", "Gulfood", "GITEX"
   ];
 
-  // Combine mock companies with DB companies
-  const allCompanies = [...dbCompanies, ...MOCK_COMPANIES];
+  // Only show real DB companies added by admin
+  const allCompanies = dbCompanies;
 
   return (
     <main className="min-h-screen bg-sand pb-12 mt-[58px]">
@@ -78,10 +77,17 @@ export default function DirectoryClient({ dbCompanies }: { dbCompanies: any[] })
       {/* Directory Listing */}
       <div className="max-w-5xl mx-auto px-4 py-6">
         <div className="text-xs text-muted mb-4">
-          Showing <strong className="text-ink">10,000+</strong> companies · <span className="text-teal">Search by product name to find specific suppliers →</span>
+          Showing <strong className="text-ink">{allCompanies.length}</strong> {allCompanies.length === 1 ? 'company' : 'companies'} · <span className="text-teal">Search by product name to find specific suppliers →</span>
         </div>
 
         <div className="flex flex-col gap-3">
+          {allCompanies.length === 0 && (
+            <div className="bg-white border border-border-brand rounded-brand-m p-12 text-center">
+              <Building2 size={40} className="text-muted mx-auto mb-3" />
+              <h3 className="font-serif font-semibold text-ink mb-1">No listings yet</h3>
+              <p className="text-sm text-muted">Business listings added by the admin will appear here.</p>
+            </div>
+          )}
           {allCompanies.map(company => {
             const tags = Array.isArray(company.tags) 
               ? company.tags 
