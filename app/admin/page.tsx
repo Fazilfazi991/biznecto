@@ -79,7 +79,7 @@ export default async function AdminOverviewPage() {
                   <div>
                     <h4 className="font-serif font-semibold text-[14px] text-ink mb-1">{req.title}</h4>
                     <div className="text-[11px] text-muted flex items-center gap-2">
-                      <span>{req.category}</span>
+                      <span>{req.quantity}</span>
                       <span className="w-1 h-1 rounded-full bg-border-brand" />
                       <span>{new Date(req.createdAt).toLocaleDateString()}</span>
                     </div>
