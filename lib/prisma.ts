@@ -16,9 +16,7 @@ function createPrismaClient(): PrismaClient {
   const pool = new Pool({
     connectionString,
     connectionTimeoutMillis: 10000,
-    ssl: connectionString.includes("sslmode=require") || connectionString.includes("supabase")
-      ? { rejectUnauthorized: false }
-      : undefined,
+    ssl: { rejectUnauthorized: false },
   });
 
   const adapter = new PrismaPg(pool);
@@ -28,9 +26,18 @@ function createPrismaClient(): PrismaClient {
   });
 }
 
-// In production (Vercel serverless), create a new client per cold start.
-// In development, reuse a global to avoid too many connections.
-export const prisma: PrismaClient =
-  process.env.NODE_ENV === "production"
-    ? createPrismaClient()
-    : (global.__prisma ?? (global.__prisma = createPrismaClient()));
+// Lazy getter — only creates the client when first accessed, not at import time.
+// This prevents blocking the auth module on startup.
+let _prisma: PrismaClient | undefined;
+
+export const prisma = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    if (!_prisma) {
+      _prisma = global.__prisma ?? createPrismaClient();
+      if (process.env.NODE_ENV !== "production") {
+        global.__prisma = _prisma;
+      }
+    }
+    return (_prisma as any)[prop];
+  },
+});
