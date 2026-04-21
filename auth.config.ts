@@ -8,7 +8,7 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
-      const isOnAdminLogin = nextUrl.pathname === "/admin/login";
+      const isOnAdminLogin = nextUrl.pathname.startsWith("/admin/login");
       const isOnAdmin = nextUrl.pathname.startsWith("/admin") && !isOnAdminLogin;
 
       if (isOnAdminLogin) {
