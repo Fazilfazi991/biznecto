@@ -30,7 +30,7 @@ export default function Home() {
 
           <h1 className="font-sans font-extrabold text-[clamp(28px,6.5vw,58px)] text-white leading-[1.1] tracking-[-0.5px] mb-[6px]">
             Get Verified B2B Buyer Leads — <br/>
-            <span className="text-teal font-normal italic font-serif">Not Just Visibility</span>
+            <span className="text-teal font-bold">Not Just Visibility</span>
           </h1>
           
           <div className="font-sans font-light text-[clamp(14px,2.5vw,20px)] text-white/35 mb-[20px] tracking-[0.5px] uppercase">
