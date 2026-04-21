@@ -10,7 +10,12 @@ export const authConfig = {
       const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
       const isOnAdmin = nextUrl.pathname.startsWith("/admin");
 
-      if (isOnDashboard || isOnAdmin) {
+      if (isOnAdmin) {
+        if (isLoggedIn && (auth?.user as any)?.role === "ADMIN") return true;
+        return false;
+      }
+
+      if (isOnDashboard) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       }
