@@ -8,7 +8,15 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
-      const isOnAdmin = nextUrl.pathname.startsWith("/admin");
+      const isOnAdminLogin = nextUrl.pathname === "/admin/login";
+      const isOnAdmin = nextUrl.pathname.startsWith("/admin") && !isOnAdminLogin;
+
+      if (isOnAdminLogin) {
+        if (isLoggedIn && (auth?.user as any)?.role === "ADMIN") {
+          return Response.redirect(new URL("/admin", nextUrl));
+        }
+        return true; // allow unauthenticated to see admin login
+      }
 
       if (isOnAdmin) {
         if (isLoggedIn && (auth?.user as any)?.role === "ADMIN") return true;
