@@ -8,10 +8,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
+      credentials: {
+        email: {},
+        password: {},
+      },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        if (credentials.email === "biznectoo" && credentials.password === "Biznect@1234") {
+        const inputEmail = (credentials.email as string).trim().toLowerCase();
+        const inputPassword = credentials.password as string;
+
+        if (inputEmail === "biznectoo" && inputPassword === "Biznect@1234") {
           return {
             id: "admin",
             email: "admin@biznecto.com",
@@ -21,7 +28,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
+          where: { email: inputEmail },
         });
 
         if (!user || !user.password) return null;
