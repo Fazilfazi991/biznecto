@@ -22,7 +22,8 @@ export const authConfig = {
 
       if (isOnAdmin) {
         if (isLoggedIn && (auth?.user as any)?.role === "ADMIN") return true;
-        return false;
+        // Redirect unauthenticated admin visitors to the admin login page
+        return Response.redirect(new URL("/admin/login", nextUrl));
       }
 
       if (isOnDashboard) {
