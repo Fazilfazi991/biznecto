@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import DirectoryClient from "./DirectoryClient";
 
 export default async function DirectoryPage() {
-  let dbCompanies = [];
+  let dbCompanies: any[] = [];
   try {
     dbCompanies = await prisma.company.findMany({
       orderBy: { createdAt: "desc" },
