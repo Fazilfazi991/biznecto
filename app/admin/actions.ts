@@ -45,7 +45,7 @@ export async function createSupplierAccount(formData: FormData) {
         description,
         location,
         tags,
-        products: "", // Supplier will fill this in themselves
+        products_legacy: "", // Supplier will fill this in themselves
         isVerified: true,
       },
     });
