@@ -1,7 +1,7 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { MapPin, Globe, CheckBadge, Package, MessageSquare } from "lucide-react";
+import { MapPin, Globe, Package, MessageSquare } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 
