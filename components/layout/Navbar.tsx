@@ -53,13 +53,23 @@ export function Navbar() {
             <div className="w-20 h-8 bg-black/5 animate-pulse rounded-md" />
           ) : session ? (
             <>
-              <Link
-                href="/dashboard"
-                className="hidden md:flex items-center gap-1.5 text-[13px] font-semibold text-ink/70 px-3 py-1.5 rounded-md border border-border-brand bg-transparent transition-colors hover:text-ink hover:bg-black/5"
-              >
-                <LayoutDashboard size={14} />
-                Dashboard
-              </Link>
+              { (session?.user as any)?.role === "ADMIN" ? (
+                <Link
+                  href="/admin"
+                  className="hidden md:flex items-center gap-1.5 text-[13px] font-semibold text-purple px-3 py-1.5 rounded-md border border-purple/20 bg-purple/5 transition-colors hover:bg-purple/10"
+                >
+                  <LayoutDashboard size={14} />
+                  Admin Hub
+                </Link>
+              ) : (
+                <Link
+                  href="/dashboard"
+                  className="hidden md:flex items-center gap-1.5 text-[13px] font-semibold text-ink/70 px-3 py-1.5 rounded-md border border-border-brand bg-transparent transition-colors hover:text-ink hover:bg-black/5"
+                >
+                  <LayoutDashboard size={14} />
+                  Dashboard
+                </Link>
+              )}
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
                 className="flex items-center gap-1.5 text-[13px] font-semibold text-white bg-teal px-3.5 py-1.5 rounded-md transition-colors hover:bg-teal-dark"
@@ -108,16 +118,29 @@ export function Navbar() {
         })}
         {/* Auth tab on mobile */}
         {session ? (
-          <Link
-            href="/dashboard"
-            className={cn(
-              "flex-1 flex flex-col items-center justify-center gap-1 text-[10px] font-semibold transition-colors",
-              pathname.startsWith("/dashboard") ? "text-teal" : "text-ink/40 hover:text-ink/70"
-            )}
-          >
-            <LayoutDashboard size={18} />
-            <span>Account</span>
-          </Link>
+          (session?.user as any)?.role === "ADMIN" ? (
+            <Link
+              href="/admin"
+              className={cn(
+                "flex-1 flex flex-col items-center justify-center gap-1 text-[10px] font-semibold transition-colors",
+                pathname.startsWith("/admin") ? "text-purple" : "text-ink/40 hover:text-ink/70"
+              )}
+            >
+              <LayoutDashboard size={18} />
+              <span>Admin</span>
+            </Link>
+          ) : (
+            <Link
+              href="/dashboard"
+              className={cn(
+                "flex-1 flex flex-col items-center justify-center gap-1 text-[10px] font-semibold transition-colors",
+                pathname.startsWith("/dashboard") ? "text-teal" : "text-ink/40 hover:text-ink/70"
+              )}
+            >
+              <LayoutDashboard size={18} />
+              <span>Account</span>
+            </Link>
+          )
         ) : (
           <Link
             href="/login"
