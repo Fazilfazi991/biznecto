@@ -22,7 +22,7 @@ export async function createSupplierAccount(formData: FormData) {
     const location = formData.get("location") as string;
     const tagsString = formData.get("tags") as string;
     const supplierName = formData.get("supplierName") as string;
-    const email = formData.get("email") as string;
+    const email = (formData.get("email") as string).toLowerCase().trim();
     const password = formData.get("password") as string;
 
     if (!companyName || !email || !password || !supplierName) {

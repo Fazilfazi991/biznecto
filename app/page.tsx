@@ -28,17 +28,18 @@ export default function Home() {
             CONNECTING BUSINESSES GLOBALLY
           </div>
 
-          <h1 className="font-sans font-extrabold text-[clamp(28px,6.5vw,58px)] text-white leading-[1.1] tracking-[-0.5px] mb-[6px]">
-            Get Verified B2B Buyer Leads — <br/>
-            <span className="text-teal font-bold">Not Just Visibility</span>
+          <h1 className="font-sans font-extrabold text-[clamp(28px,6.5vw,58px)] text-white leading-[1.1] tracking-[-0.5px] mb-[15px]">
+            Find Verified Global Suppliers & <br/>
+            <span className="text-teal font-bold">Get Business Leads</span>
           </h1>
           
           <div className="font-sans font-light text-[clamp(14px,2.5vw,20px)] text-white/35 mb-[20px] tracking-[0.5px] uppercase">
-            List. Search. Post. Connect.
+            LIST. SEARCH. POST. CONNECT.
           </div>
           
-          <p className="text-[14px] text-white/45 leading-[1.8] mb-[28px] max-w-[460px] mx-auto">
-            BIZNECTO connects global suppliers and manufacturers with real buyers actively looking for products and services. <strong className="text-white/70 font-medium">No cold outreach. No wasted marketing spend.</strong>
+          <p className="font-sans text-[clamp(16px,2.2vw,20px)] text-white/70 max-w-[800px] mx-auto leading-relaxed mb-[40px]">
+            Connect with suppliers & buyers worldwide. <br className="hidden md:block" />
+            Send inquiries. Get quotes. Grow faster.
           </p>
 
           <div className="max-w-[600px] mx-auto mb-[20px]">
