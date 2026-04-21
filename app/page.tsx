@@ -88,15 +88,32 @@ export default function Home() {
         </div>
       </div>
 
-      {/* TRUST STRIP (Kept from HTML) */}
-      <div className="bg-sand border-y border-border-brand p-4">
-        <span className="block text-center text-[10px] font-semibold tracking-[2px] uppercase text-hint mb-3">
-          Companies from these global events use Biznecto
-        </span>
-        <div className="flex gap-[clamp(14px,3vw,36px)] flex-wrap justify-center">
-          {["Gulfood", "GITEX Global", "Arab Health", "ADIPEC", "Hannover Messe", "CES", "Anuga"].map(l => (
-            <span key={l} className="font-serif font-semibold text-[11px] text-[#b5b0a6] tracking-[0.3px]">{l}</span>
-          ))}
+      {/* TRUST STRIP — Trusted by businesses worldwide */}
+      <div className="bg-[#0a1628] border-y border-white/10 py-3 px-4">
+        <div className="max-w-4xl mx-auto flex items-center justify-center gap-4 flex-wrap">
+          <span className="text-white/60 text-[12px] font-medium tracking-wide whitespace-nowrap">
+            Trusted by businesses worldwide
+          </span>
+          <div className="flex items-center gap-2 flex-wrap justify-center">
+            {[
+              { code: "ae", label: "UAE" },
+              { code: "in", label: "India" },
+              { code: "cn", label: "China" },
+              { code: "sa", label: "Saudi Arabia" },
+              { code: "eu", label: "Europe" },
+            ].map(({ code, label }) => (
+              <img
+                key={code}
+                src={`https://flagcdn.com/w40/${code}.png`}
+                alt={label}
+                title={label}
+                className="h-5 w-auto rounded-sm shadow-sm opacity-90 hover:opacity-100 transition-opacity"
+              />
+            ))}
+            <span className="flex items-center gap-1 text-white/60 text-[12px] font-medium border border-white/20 rounded px-2 py-0.5">
+              🌐 Global
+            </span>
+          </div>
         </div>
       </div>
 
