@@ -148,20 +148,24 @@ export default function DirectoryClient({ dbCompanies }: { dbCompanies: any[] })
                     </div>
                     
                     <div className="hidden sm:flex flex-wrap gap-1.5 justify-end">
-                      <Badge variant="premium" className="bg-teal/5 text-teal border-teal/10">Verified Member</Badge>
-                      {tags.filter((t: string) => t !== "Verified").map((t: string) => (
-                        <Badge key={t} variant="gray" className="bg-sand text-muted border-border-brand">
-                          {t}
+                      {/* Product/Tags section */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {company.items?.length > 0 ? (
+                      company.items.map((p: any) => (
+                        <Badge key={p.id} variant="gray" className="text-[10px] bg-sand text-ink border-none">
+                          {p.name}
                         </Badge>
-                      ))}
-                    </div>
+                      ))
+                    ) : (
+                      <span className="text-[10px] text-muted italic">No products listed</span>
+                    )}
                   </div>
+                </div>
 
                   <p className="text-[13px] text-muted leading-relaxed mb-4 line-clamp-2 max-w-2xl mt-2 italic">
                     {company.description || "A professional supplier in the global B2B marketplace, committed to quality and international standards."}
                   </p>
-
-                  {/* Product Tags Section */}
                   <div className="flex flex-wrap items-center gap-2 mt-auto">
                     <span className="text-[10px] font-bold text-muted uppercase tracking-widest bg-sand px-2 py-1 rounded">Products:</span>
                     {products.length > 0 && products[0] !== "" ? (
@@ -178,12 +182,16 @@ export default function DirectoryClient({ dbCompanies }: { dbCompanies: any[] })
 
                 {/* Sidebar Actions */}
                 <div className="md:w-48 flex flex-row md:flex-col gap-2 justify-center border-t md:border-t-0 md:border-l border-border-brand pt-4 md:pt-0 md:pl-6 mt-2 md:mt-0">
-                  <Button variant="primary" size="sm" className="flex-1 bg-ink hover:bg-black text-white rounded-lg py-2.5">
-                    Contact Supplier
-                  </Button>
-                  <Button variant="outline" size="sm" className="flex-1 rounded-lg border-border-brand hover:bg-sand text-ink py-2.5">
-                    View Catalog
-                  </Button>
+                  <Link href={`/suppliers/${company.id}`} className="flex-1">
+                    <Button variant="primary" size="sm" className="w-full bg-ink hover:bg-black text-white rounded-lg py-2.5">
+                      Contact Supplier
+                    </Button>
+                  </Link>
+                  <Link href={`/suppliers/${company.id}`} className="flex-1">
+                    <Button variant="outline" size="sm" className="w-full rounded-lg border-border-brand hover:bg-sand text-ink py-2.5">
+                      View Profile
+                    </Button>
+                  </Link>
                 </div>
               </div>
             );

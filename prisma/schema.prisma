@@ -29,11 +29,27 @@ model Company {
   location    String?
   logoUrl     String?
   tags        String   // comma-separated
-  products    String   // comma-separated
+  products_legacy String? // Keeping old field for compatibility
   isPremium   Boolean  @default(false)
   isVerified  Boolean  @default(false)
   
   users       User[]
+  items       Product[] // NEW: Real products
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  imageUrl    String?
+  category    String?
+  price       String?
+
+  company     Company  @relation(fields: [companyId], references: [id])
+  companyId   String
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
