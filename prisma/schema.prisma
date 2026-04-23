@@ -22,16 +22,25 @@ model User {
   requirements Requirement[]
 }
 
+enum Plan {
+  FREE
+  STARTER
+  PRO
+  PREMIUM
+}
+
 model Company {
   id          String   @id @default(cuid())
   name        String
   description String?
   location    String?
   logoUrl     String?
+  catalogueUrl String?
   tags        String   // comma-separated
   products_legacy String? // Keeping old field for compatibility
   isPremium   Boolean  @default(false)
   isVerified  Boolean  @default(false)
+  plan        Plan     @default(FREE)
   
   users       User[]
   items       Product[] // NEW: Real products

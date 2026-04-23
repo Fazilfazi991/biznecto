@@ -5,19 +5,12 @@ import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 
 export async function createSupplierAccount(formData: FormData) {
-  // Hard 15-second timeout to prevent "stuck" UI
-  const timeoutPromise = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error("Database connection timed out. Check your connection string.")), 15000)
-  );
-
   try {
-    const result = await Promise.race([
-      (async () => {
-        if (!process.env.DATABASE_URL) {
-          return { success: false, error: "Database not configured." };
-        }
+    if (!process.env.DATABASE_URL) {
+      return { success: false, error: "Database not configured." };
+    }
 
-        const companyName = formData.get("companyName") as string;
+    const companyName = formData.get("companyName") as string;
     const description = formData.get("description") as string;
     const location = formData.get("location") as string;
     const tagsString = formData.get("tags") as string;
@@ -45,7 +38,7 @@ export async function createSupplierAccount(formData: FormData) {
         description,
         location,
         tags,
-        products_legacy: "", // Supplier will fill this in themselves
+        products_legacy: "", // Ensure this field exists in your Prisma schema
         isVerified: true,
       },
     });
@@ -61,14 +54,8 @@ export async function createSupplierAccount(formData: FormData) {
       },
     });
 
-
-        revalidatePath("/directory");
-        return { success: true, companyName, email, password };
-      })(),
-      timeoutPromise
-    ]) as any;
-
-    return result;
+    revalidatePath("/directory");
+    return { success: true, companyName, email, password };
   } catch (error: any) {
     console.error("Error creating supplier account:", error);
     return { success: false, error: error.message };

@@ -22,9 +22,14 @@ export async function POST(req: NextRequest) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
+    
+    // Generate role-based ID
+    const prefix = role === "BUYER" ? "BYR_" : "SUP_";
+    const customId = `${prefix}${crypto.randomUUID().replace(/-/g, "").substring(0, 12)}`;
 
     const user = await prisma.user.create({
       data: {
+        id: customId,
         name,
         email,
         password: hashedPassword,

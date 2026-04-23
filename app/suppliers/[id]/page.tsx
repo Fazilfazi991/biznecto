@@ -1,7 +1,7 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { MapPin, Globe, Package, MessageSquare } from "lucide-react";
+import { MapPin, Globe, Package, MessageSquare, FileDown } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 
@@ -43,7 +43,14 @@ export default async function SupplierProfilePage({ params }: { params: { id: st
             </div>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
+            {company.catalogueUrl && (
+              <a href={company.catalogueUrl} target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 px-8 py-6 rounded-xl text-lg flex items-center gap-2">
+                  <FileDown size={20} /> Download Catalogue
+                </Button>
+              </a>
+            )}
             <Button className="bg-teal hover:bg-teal-dark text-white px-8 py-6 rounded-xl text-lg shadow-lg shadow-teal/20">
               Contact Supplier
             </Button>

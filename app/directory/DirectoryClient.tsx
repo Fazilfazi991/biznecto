@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, MapPin, CheckCircle2, MessageSquare, Filter, ArrowUpRight, ShieldCheck, Tag } from "lucide-react";
+import { Search, MapPin, CheckCircle2, MessageSquare, Filter, ArrowUpRight, ShieldCheck, Tag, FileDown } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
@@ -105,8 +105,13 @@ export default function DirectoryClient({ dbCompanies }: { dbCompanies: any[] })
                         {company.name}
                         {isVerified && <CheckCircle2 size={18} className="text-teal" />}
                       </h3>
-                      <div className="text-xs font-semibold text-muted flex items-center gap-1 mt-0.5">
-                        <MapPin size={12} className="text-teal" /> {company.location || "Global Supplier"}
+                      <div className="text-xs font-semibold text-muted flex items-center gap-3 mt-0.5">
+                        <span className="flex items-center gap-1"><MapPin size={12} className="text-teal" /> {company.location || "Global Supplier"}</span>
+                        {company.catalogueUrl && (
+                          <span className="flex items-center gap-1 text-blue-600 bg-blue-50 px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider">
+                            <FileDown size={10} /> Catalogue
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>

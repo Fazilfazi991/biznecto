@@ -5,32 +5,40 @@ import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 
 export async function addProduct(formData: FormData) {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Not authenticated");
+  try {
+    const session = await auth();
+    if (!session?.user?.id) return { success: false, error: "Not authenticated" };
 
-  const name = formData.get("name") as string;
-  const description = formData.get("description") as string;
-  const imageUrl = formData.get("imageUrl") as string;
-  const category = formData.get("category") as string;
+    const name = formData.get("name") as string;
+    const description = formData.get("description") as string;
+    const imageUrl = formData.get("imageUrl") as string;
+    const category = formData.get("category") as string;
 
-  // Find the company associated with this user
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    include: { company: true }
-  });
+    if (!name) return { success: false, error: "Product name is required" };
 
-  if (!user?.companyId) throw new Error("No company found for this account");
+    // Find the company associated with this user
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      include: { company: true }
+    });
 
-  await prisma.product.create({
-    data: {
-      name,
-      description,
-      imageUrl,
-      category,
-      companyId: user.companyId
-    }
-  });
+    if (!user?.companyId) return { success: false, error: "No company found for this account" };
 
-  revalidatePath("/dashboard/products");
-  revalidatePath(`/suppliers/${user.companyId}`);
+    await prisma.product.create({
+      data: {
+        name,
+        description,
+        imageUrl,
+        category,
+        companyId: user.companyId
+      }
+    });
+
+    revalidatePath("/dashboard/products");
+    revalidatePath(`/suppliers/${user.companyId}`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Add product error:", error);
+    return { success: false, error: error.message || "Failed to add product" };
+  }
 }

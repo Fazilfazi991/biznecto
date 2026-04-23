@@ -3,6 +3,7 @@ import { Users, AlertCircle, Building2, Package, LayoutDashboard, Search } from 
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { prisma } from "@/lib/prisma";
+import { ModerationQueue } from "./ModerationQueue";
 
 export default async function AdminOverviewPage() {
   // Fetch real counts from the database
@@ -29,8 +30,9 @@ export default async function AdminOverviewPage() {
   // Fetch pending requirements
   const pendingRequirements = await prisma.requirement.findMany({
     where: { status: "PENDING" },
-    take: 5,
-    orderBy: { createdAt: 'desc' }
+    take: 10,
+    orderBy: { createdAt: 'desc' },
+    include: { author: { select: { name: true } } }
   });
 
   return (
@@ -61,46 +63,12 @@ export default async function AdminOverviewPage() {
       <div className="grid lg:grid-cols-3 gap-6">
         
         {/* Moderation Queue */}
-        <div className="lg:col-span-2 bg-white border border-border-brand rounded-brand-m overflow-hidden flex flex-col shadow-sm">
-          <div className="bg-sand p-4 border-b border-border-brand flex items-center justify-between">
-            <h3 className="font-sans font-semibold text-sm flex items-center gap-2">
-              <AlertCircle size={16} className="text-amber-500" />
-              Pending Requirements Queue
-            </h3>
-            {pendingRequirementsCount > 0 && (
-              <Badge variant="hot">{pendingRequirementsCount} Pending</Badge>
-            )}
-          </div>
-          
-          <div className="divide-y divide-border-brand flex-1 flex flex-col">
-            {pendingRequirements.length > 0 ? (
-              pendingRequirements.map((req) => (
-                <div key={req.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div>
-                    <h4 className="font-serif font-semibold text-[14px] text-ink mb-1">{req.title}</h4>
-                    <div className="text-[11px] text-muted flex items-center gap-2">
-                      <span>{req.quantity}</span>
-                      <span className="w-1 h-1 rounded-full bg-border-brand" />
-                      <span>{new Date(req.createdAt).toLocaleDateString()}</span>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 shrink-0">
-                    <Button variant="outline" size="sm" className="text-red-600 border-red-200 hover:border-red-600 hover:bg-red-50">Reject</Button>
-                    <Button variant="primary" size="sm" className="bg-teal hover:bg-teal-dark text-white">Approve & Publish</Button>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="flex-1 flex flex-col items-center justify-center p-12 text-center">
-                <div className="w-12 h-12 bg-sand rounded-full flex items-center justify-center mb-3">
-                  <LayoutDashboard size={20} className="text-muted/40" />
-                </div>
-                <p className="text-[13px] text-muted font-medium">All caught up!</p>
-                <p className="text-[11px] text-hint">New buyer requirements will appear here for review.</p>
-              </div>
-            )}
-          </div>
-        </div>
+        <ModerationQueue 
+          pendingRequirements={pendingRequirements} 
+          totalCount={pendingRequirementsCount} 
+        />
+
+        {/* Recent Activity */}
 
         {/* Recent Activity */}
         <div className="bg-white border border-border-brand rounded-brand-m shadow-sm flex flex-col">
