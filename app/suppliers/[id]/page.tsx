@@ -5,9 +5,10 @@ import { MapPin, Globe, Package, MessageSquare, FileDown, Mail, Phone, User, Che
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 
-export default async function SupplierProfilePage({ params }: { params: { id: string } }) {
+export default async function SupplierProfilePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const company = await prisma.company.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: { 
       items: true,
       users: {

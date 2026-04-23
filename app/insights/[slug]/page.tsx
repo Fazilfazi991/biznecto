@@ -4,8 +4,9 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Clock, User, Share2, MessageCircle } from "lucide-react";
 import { INSIGHTS } from "@/lib/insightsData";
 
-export default function InsightDetailPage({ params }: { params: { slug: string } }) {
-  const insight = INSIGHTS.find((i) => i.slug === params.slug);
+export default async function InsightDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const insight = INSIGHTS.find((i) => i.slug === slug);
 
   if (!insight) {
     notFound();
