@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Fraunces } from "next/font/google";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 import { AuthProvider } from "@/components/layout/AuthProvider";
+import { ConditionalWrapper } from "@/components/layout/ConditionalWrapper";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -47,11 +46,9 @@ export default function RootLayout({
         className={`${plusJakartaSans.variable} ${fraunces.variable} font-sans antialiased bg-white text-body min-h-screen flex flex-col`}
       >
         <AuthProvider>
-          <Navbar />
-          <div className="flex-1">
+          <ConditionalWrapper>
             {children}
-          </div>
-          <Footer />
+          </ConditionalWrapper>
         </AuthProvider>
       </body>
     </html>
