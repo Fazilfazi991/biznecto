@@ -151,7 +151,7 @@ export default async function SupplierProfilePage({ params }: { params: { id: st
         <div className="lg:col-span-2 space-y-8">
           <div className="flex items-center justify-between border-b border-border-brand pb-5">
             <h3 className="font-serif font-bold text-2xl text-ink tracking-tight">Digital Showroom</h3>
-            <Badge variant="outline" className="text-[11px] font-bold uppercase tracking-widest border-border-brand">
+            <Badge variant="gray" className="text-[11px] font-bold uppercase tracking-widest border-border-brand">
                {company.items.length} Items
             </Badge>
           </div>
