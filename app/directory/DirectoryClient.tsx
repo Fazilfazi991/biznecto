@@ -126,7 +126,7 @@ export default function DirectoryClient({ dbCompanies }: { dbCompanies: any[] })
                       company.items.slice(0, 4).map((p: any) => (
                         <Link 
                           key={p.id} 
-                          href={`/suppliers/${company.id}`}
+                          href={`/products/${p.id}`}
                           className="text-[11px] font-medium bg-white border border-border-brand px-3 py-1 rounded-full text-ink hover:border-teal hover:text-teal hover:shadow-sm transition-all"
                         >
                           {p.name}

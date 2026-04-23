@@ -174,10 +174,14 @@ export default async function SupplierProfilePage({ params }: { params: Promise<
                     </div>
                   </div>
                   <div className="p-6 flex-1 flex flex-col">
-                    <h4 className="font-serif font-bold text-lg text-ink mb-2 group-hover:text-teal transition-colors leading-tight">{product.name}</h4>
+                    <Link href={`/products/${product.id}`}>
+                      <h4 className="font-serif font-bold text-lg text-ink mb-2 group-hover:text-teal transition-colors leading-tight">{product.name}</h4>
+                    </Link>
                     <p className="text-[13px] text-muted line-clamp-3 mb-6 leading-relaxed flex-1">{product.description || "High-quality product sourced globally."}</p>
                     <div className="mt-auto">
-                       <Button variant="outline" className="w-full rounded-xl h-10 text-[12px] font-bold border-border-brand hover:bg-teal hover:text-white hover:border-teal transition-all">View Specifications</Button>
+                       <Link href={`/products/${product.id}`}>
+                          <Button variant="outline" className="w-full rounded-xl h-10 text-[12px] font-bold border-border-brand hover:bg-teal hover:text-white hover:border-teal transition-all">View Specifications</Button>
+                       </Link>
                     </div>
                   </div>
                 </div>
