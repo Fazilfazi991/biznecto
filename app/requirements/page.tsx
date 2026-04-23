@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { prisma } from "@/lib/prisma";
 import { RequirementForm } from "./RequirementForm";
 import { auth } from "@/auth";
+import Link from "next/link";
 
 export default async function RequirementsPage() {
   const session = await auth();
@@ -39,7 +40,24 @@ export default async function RequirementsPage() {
                 </p>
               </div>
             ) : (
-              <RequirementForm /> 
+              <div className="bg-teal p-6 rounded-2xl border border-white/10 shadow-2xl max-w-sm">
+                <h3 className="font-serif font-bold text-lg text-white mb-2">Join to Source</h3>
+                <p className="text-white/70 text-[11px] leading-relaxed mb-6 italic">
+                  Create a Buyer account to post your requirements and receive competitive quotes from global manufacturers.
+                </p>
+                <div className="flex gap-3">
+                  <Link href="/login" className="flex-1">
+                    <Button className="w-full bg-white text-teal hover:bg-white/90 font-bold text-xs h-10 rounded-lg">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link href="/login" className="flex-1">
+                    <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10 font-bold text-xs h-10 rounded-lg">
+                      Register
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             )}
           </div>
         </div>
