@@ -121,21 +121,29 @@ export default function DirectoryClient({ dbCompanies }: { dbCompanies: any[] })
                   </p>
 
                   <div className="flex flex-wrap items-center gap-2 mt-auto">
-                    <span className="text-[10px] font-bold text-muted uppercase tracking-widest bg-sand px-2 py-1 rounded">Catalog Preview:</span>
+                    <span className="text-[10px] font-bold text-muted uppercase tracking-widest bg-sand px-2 py-1 rounded">Product Preview:</span>
                     {company.items?.length > 0 ? (
                       company.items.slice(0, 4).map((p: any) => (
-                        <span key={p.id} className="text-[11px] font-medium bg-white border border-border-brand px-3 py-1 rounded-full text-ink hover:border-teal hover:text-teal transition-all cursor-default">
+                        <Link 
+                          key={p.id} 
+                          href={`/suppliers/${company.id}`}
+                          className="text-[11px] font-medium bg-white border border-border-brand px-3 py-1 rounded-full text-ink hover:border-teal hover:text-teal hover:shadow-sm transition-all"
+                        >
                           {p.name}
-                        </span>
+                        </Link>
                       ))
                     ) : products.length > 0 && products[0] !== "" ? (
                       products.slice(0, 4).map((p: string) => (
-                        <span key={p} className="text-[11px] font-medium bg-white border border-border-brand px-3 py-1 rounded-full text-ink">
+                        <Link 
+                          key={p} 
+                          href={`/suppliers/${company.id}`}
+                          className="text-[11px] font-medium bg-white border border-border-brand px-3 py-1 rounded-full text-ink hover:border-teal hover:text-teal hover:shadow-sm transition-all"
+                        >
                           {p}
-                        </span>
+                        </Link>
                       ))
                     ) : (
-                      <span className="text-[11px] text-hint italic">Catalog being updated...</span>
+                      <span className="text-[11px] text-hint italic">Product catalog being updated...</span>
                     )}
                   </div>
                 </div>
