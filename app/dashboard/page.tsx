@@ -42,7 +42,7 @@ export default async function DashboardOverviewPage() {
     });
 
     // Apply Plan-based limits
-    const planLimits = {
+    const planLimits: Record<string, number> = {
       FREE: 3,
       STARTER: 10,
       PRO: 25,
