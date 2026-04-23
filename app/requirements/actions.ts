@@ -62,10 +62,73 @@ export async function approveRequirement(id: string) {
 
 export async function rejectRequirement(id: string) {
   try {
+    const session = await auth();
+    if (session?.user?.role !== "ADMIN") {
+      return { success: false, error: "Unauthorized: Admin access required." };
+    }
     await prisma.requirement.update({
       where: { id },
       data: { status: "REJECTED" },
     });
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deleteRequirement(id: string) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) return { success: false, error: "Please log in." };
+
+    const requirement = await prisma.requirement.findUnique({
+      where: { id },
+      select: { authorId: true }
+    });
+
+    if (!requirement) return { success: false, error: "Requirement not found." };
+
+    // Only author or admin can delete
+    if (requirement.authorId !== session.user.id && session.user.role !== "ADMIN") {
+      return { success: false, error: "Unauthorized." };
+    }
+
+    await prisma.requirement.delete({
+      where: { id },
+    });
+
+    revalidatePath("/requirements");
+    revalidatePath("/dashboard");
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+export async function updateRequirement(id: string, formData: FormData) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) return { success: false, error: "Please log in." };
+
+    const title = formData.get("title") as string;
+    const quantity = formData.get("quantity") as string;
+    const budget = formData.get("budget") as string;
+    const description = formData.get("description") as string;
+
+    await prisma.requirement.update({
+      where: { id },
+      data: {
+        title,
+        quantity,
+        budget: budget || "Negotiable",
+        description,
+        status: "PENDING", // Re-moderate on edit
+      },
+    });
+
+    revalidatePath("/requirements");
+    revalidatePath("/dashboard");
     revalidatePath("/admin");
     return { success: true };
   } catch (error: any) {

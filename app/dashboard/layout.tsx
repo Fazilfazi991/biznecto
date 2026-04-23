@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { LayoutDashboard, Package, Handshake, Eye, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Package, Handshake, Eye, Settings, LogOut, ClipboardList } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
@@ -13,13 +13,24 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   const user = session.user;
+  const isBuyer = user.role === "BUYER";
+  const isAdmin = user.role === "ADMIN";
+
   const navItems = [
     { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
-    { name: "My Products", href: "/dashboard/products", icon: Package },
-    { name: "Buyer Matches", href: "/dashboard/matches", icon: Handshake },
-    { name: "Profile Visibility", href: "/dashboard/visibility", icon: Eye },
-    { name: "Settings", href: "/dashboard/settings", icon: Settings },
   ];
+
+  if (!isBuyer || isAdmin) {
+    navItems.push({ name: "My Products", href: "/dashboard/products", icon: Package });
+    navItems.push({ name: "Buyer Matches", href: "/dashboard/matches", icon: Handshake });
+    navItems.push({ name: "Profile Visibility", href: "/dashboard/visibility", icon: Eye });
+  }
+
+  if (isBuyer || isAdmin) {
+    navItems.push({ name: "My Requirements", href: "/dashboard/requirements", icon: ClipboardList });
+  }
+
+  navItems.push({ name: "Settings", href: "/dashboard/settings", icon: Settings });
 
   return (
     <div className="flex min-h-screen pt-[58px] bg-[#eef2f7]">
@@ -30,11 +41,15 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <div className="text-[9px] font-semibold tracking-[1px] uppercase text-white/40 mb-1">Current Plan</div>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-teal" />
-              <span className="font-serif font-bold text-[13px] text-white">Free Supplier</span>
+              <span className="font-serif font-bold text-[13px] text-white">
+                {isBuyer ? "Free Buyer" : "Free Supplier"}
+              </span>
             </div>
-            <Link href="/pricing" className="text-[10px] text-teal underline mt-1 block hover:text-white transition-colors">
-              Upgrade Plan
-            </Link>
+            {!isBuyer && (
+              <Link href="/pricing" className="text-[10px] text-teal underline mt-1 block hover:text-white transition-colors">
+                Upgrade Plan
+              </Link>
+            )}
           </div>
 
           <div className="text-[9px] font-bold tracking-[1.5px] uppercase text-white/30 px-3 mt-6 mb-2">Menu</div>

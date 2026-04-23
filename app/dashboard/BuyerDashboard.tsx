@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { RequirementForm } from "@/app/requirements/RequirementForm";
 
 interface BuyerDashboardProps {
   user: any;
@@ -27,9 +28,7 @@ export function BuyerDashboard({ user, requirements }: BuyerDashboardProps) {
           <h2 className="font-serif font-bold text-2xl mb-1">Find the Best Global Suppliers</h2>
           <p className="text-[13px] text-white/60 max-w-md">Post your requirements and let verified manufacturers come to you with competitive quotes.</p>
         </div>
-        <Link href="/requirements" className="bg-teal hover:bg-teal-dark text-white px-8 py-3 rounded-xl text-sm font-bold transition-all shadow-lg shadow-teal/20">
-          + Post Requirement
-        </Link>
+        <RequirementForm />
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -51,7 +50,7 @@ export function BuyerDashboard({ user, requirements }: BuyerDashboardProps) {
                   <ClipboardList size={16} className="text-ink" />
                   My Recent Sourcing Requests
                 </span>
-                <Link href="/requirements" className="text-[11px] text-teal font-bold hover:underline">View All</Link>
+                <Link href="/dashboard/requirements" className="text-[11px] text-teal font-bold hover:underline">View All</Link>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
@@ -70,7 +69,24 @@ export function BuyerDashboard({ user, requirements }: BuyerDashboardProps) {
                           </Badge>
                         </div>
                       </div>
-                      <Button variant="outline" size="sm" className="text-[10px] font-bold h-8 border-border-brand">Manage</Button>
+                      <div className="flex gap-2">
+                        <RequirementForm requirement={req} />
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={async () => {
+                            if (confirm("Are you sure you want to delete this requirement?")) {
+                              const { deleteRequirement } = await import("@/app/requirements/actions");
+                              const res = await deleteRequirement(req.id);
+                              if (res.success) window.location.reload();
+                              else alert(res.error);
+                            }
+                          }}
+                          className="text-[10px] font-bold h-8 border-red-100 text-red-500 hover:bg-red-50"
+                        >
+                          Delete
+                        </Button>
+                      </div>
                     </div>
                   ))}
                 </div>

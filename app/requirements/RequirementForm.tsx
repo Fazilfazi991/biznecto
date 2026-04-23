@@ -4,15 +4,17 @@ import React, { useState } from "react";
 import { Plus, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import { postRequirement } from "./actions";
+import { postRequirement, updateRequirement } from "./actions";
 import { useRouter } from "next/navigation";
 
-export function RequirementForm() {
+export function RequirementForm({ requirement }: { requirement?: any }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  const isEditing = !!requirement;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,37 +23,41 @@ export function RequirementForm() {
     setSuccess(false);
 
     const formData = new FormData(e.currentTarget);
-    const result = await postRequirement(formData);
+    const result = isEditing 
+      ? await updateRequirement(requirement.id, formData)
+      : await postRequirement(formData);
 
     if (result.success) {
       setSuccess(true);
-      (e.target as HTMLFormElement).reset();
+      if (!isEditing) (e.target as HTMLFormElement).reset();
       router.refresh();
       setTimeout(() => {
         setSuccess(false);
         setModalOpen(false);
       }, 2500);
     } else {
-      setError(result.error || "Failed to post requirement");
+      setError(result.error || "Failed to save requirement");
     }
     setLoading(false);
   };
 
   return (
     <>
-      <Button variant="primary" onClick={() => setModalOpen(true)}>
-        + Post Requirement
+      <Button variant={isEditing ? "outline" : "primary"} size={isEditing ? "sm" : "md"} onClick={() => setModalOpen(true)} className={isEditing ? "text-[10px] font-bold h-8 border-border-brand hover:bg-sand" : ""}>
+        {isEditing ? "Edit" : "+ Post Requirement"}
       </Button>
 
-      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} title="Post a New Requirement">
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} title={isEditing ? "Edit Requirement" : "Post a New Requirement"}>
         {success ? (
           <div className="flex flex-col items-center justify-center py-12 text-center animate-in zoom-in-95 duration-300">
             <div className="w-16 h-16 bg-teal/10 rounded-full flex items-center justify-center mb-4">
               <CheckCircle2 size={32} className="text-teal" />
             </div>
-            <h3 className="font-serif font-bold text-xl text-ink mb-2">Submitted Successfully!</h3>
+            <h3 className="font-serif font-bold text-xl text-ink mb-2">{isEditing ? "Updated Successfully!" : "Submitted Successfully!"}</h3>
             <p className="text-sm text-muted max-w-[280px]">
-              Your requirement is now in the moderation queue and will be live once approved.
+              {isEditing 
+                ? "Your changes have been saved and sent for re-moderation." 
+                : "Your requirement is now in the moderation queue and will be live once approved."}
             </p>
           </div>
         ) : (
@@ -61,6 +67,7 @@ export function RequirementForm() {
               <input 
                 name="title"
                 required 
+                defaultValue={requirement?.title}
                 placeholder="e.g. 500kg Organic Honey"
                 className="w-full border border-border-brand rounded-xl px-4 py-3 text-sm focus:border-teal focus:ring-4 focus:ring-teal/5 outline-none transition-all" 
               />
@@ -72,6 +79,7 @@ export function RequirementForm() {
                 <input 
                   name="quantity"
                   required 
+                  defaultValue={requirement?.quantity}
                   placeholder="e.g. 500 units"
                   className="w-full border border-border-brand rounded-xl px-4 py-3 text-sm focus:border-teal focus:ring-4 focus:ring-teal/5 outline-none transition-all" 
                 />
@@ -80,6 +88,7 @@ export function RequirementForm() {
                 <label className="text-[10px] font-bold text-muted uppercase tracking-widest">Estimated Budget</label>
                 <input 
                   name="budget"
+                  defaultValue={requirement?.budget}
                   placeholder="e.g. AED 10,000"
                   className="w-full border border-border-brand rounded-xl px-4 py-3 text-sm focus:border-teal focus:ring-4 focus:ring-teal/5 outline-none transition-all" 
                 />
@@ -92,6 +101,7 @@ export function RequirementForm() {
                 name="description"
                 required 
                 rows={4}
+                defaultValue={requirement?.description}
                 placeholder="Provide details, variants, certs needed..."
                 className="w-full border border-border-brand rounded-xl px-4 py-3 text-sm focus:border-teal focus:ring-4 focus:ring-teal/5 outline-none transition-all resize-none" 
               />
@@ -110,10 +120,10 @@ export function RequirementForm() {
             >
               {loading ? (
                 <>
-                  <Loader2 size={18} className="animate-spin" /> Publishing...
+                  <Loader2 size={18} className="animate-spin" /> {isEditing ? "Saving..." : "Publishing..."}
                 </>
               ) : (
-                "Post Requirement"
+                isEditing ? "Save Changes" : "Post Requirement"
               )}
             </Button>
           </form>
