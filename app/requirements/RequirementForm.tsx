@@ -43,7 +43,7 @@ export function RequirementForm({ requirement }: { requirement?: any }) {
 
   return (
     <>
-      <Button variant={isEditing ? "outline" : "primary"} size={isEditing ? "sm" : "md"} onClick={() => setModalOpen(true)} className={isEditing ? "text-[10px] font-bold h-8 border-border-brand hover:bg-sand" : ""}>
+      <Button variant={isEditing ? "outline" : "primary"} size={isEditing ? "sm" : "default"} onClick={() => setModalOpen(true)} className={isEditing ? "text-[10px] font-bold h-8 border-border-brand hover:bg-sand" : ""}>
         {isEditing ? "Edit" : "+ Post Requirement"}
       </Button>
 
