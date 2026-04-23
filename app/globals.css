@@ -58,7 +58,7 @@ body {
 
 /* ─── GLOBAL FORM FIXES ─── */
 input, textarea, select {
-  color: var(--color-ink) !important;
+  color: var(--color-ink);
 }
 
 input::placeholder, textarea::placeholder {
