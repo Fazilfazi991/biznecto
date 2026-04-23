@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
             ],
           } : {},
           location ? { location: { contains: location, mode: "insensitive" } } : {},
+          { status: "APPROVED" },
         ],
       },
       include: { items: true },

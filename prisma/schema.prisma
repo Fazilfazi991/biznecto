@@ -41,6 +41,7 @@ model Company {
   isPremium   Boolean  @default(false)
   isVerified  Boolean  @default(false)
   plan        Plan     @default(FREE)
+  status      String   @default("PENDING") // PENDING, APPROVED, REJECTED
   
   users       User[]
   items       Product[] // NEW: Real products

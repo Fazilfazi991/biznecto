@@ -1,64 +1,44 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import bcrypt from "bcryptjs";
+import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 
-export async function createSupplierAccount(formData: FormData) {
+export async function approveCompany(id: string) {
   try {
-    if (!process.env.DATABASE_URL) {
-      return { success: false, error: "Database not configured." };
+    const session = await auth();
+    if (session?.user?.role !== "ADMIN") {
+      return { success: false, error: "Unauthorized" };
     }
 
-    const companyName = formData.get("companyName") as string;
-    const description = formData.get("description") as string;
-    const location = formData.get("location") as string;
-    const tagsString = formData.get("tags") as string;
-    const supplierName = formData.get("supplierName") as string;
-    const email = (formData.get("email") as string).toLowerCase().trim();
-    const password = formData.get("password") as string;
-
-    if (!companyName || !email || !password || !supplierName) {
-      return { success: false, error: "Company name, contact name, email and password are required." };
-    }
-
-    // Check if email already exists
-    const existing = await prisma.user.findUnique({ where: { email } });
-    if (existing) {
-      return { success: false, error: "An account with this email already exists." };
-    }
-
-    const tags = tagsString ? tagsString.split(",").map(t => t.trim()).filter(Boolean).join(",") : "Verified";
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    // Create the Company first
-    const company = await prisma.company.create({
-      data: {
-        name: companyName,
-        description,
-        location,
-        tags,
-        products_legacy: "", // Ensure this field exists in your Prisma schema
-        isVerified: true,
-      },
+    await prisma.company.update({
+      where: { id },
+      data: { status: "APPROVED", isVerified: true },
     });
 
-    // Create the User (supplier) linked to the company
-    await prisma.user.create({
-      data: {
-        name: supplierName,
-        email,
-        password: hashedPassword,
-        role: "SUPPLIER",
-        companyId: company.id,
-      },
-    });
-
+    revalidatePath("/admin");
     revalidatePath("/directory");
-    return { success: true, companyName, email, password };
+    return { success: true };
   } catch (error: any) {
-    console.error("Error creating supplier account:", error);
     return { success: false, error: error.message };
   }
 }
 
+export async function rejectCompany(id: string) {
+  try {
+    const session = await auth();
+    if (session?.user?.role !== "ADMIN") {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    await prisma.company.update({
+      where: { id },
+      data: { status: "REJECTED" },
+    });
+
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}

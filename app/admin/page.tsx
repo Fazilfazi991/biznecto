@@ -4,20 +4,26 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { prisma } from "@/lib/prisma";
 import { ModerationQueue } from "./ModerationQueue";
+import { CompanyModeration } from "./CompanyModeration";
 
 export default async function AdminOverviewPage() {
   // Fetch real counts from the database
-  const supplierCount = await prisma.company.count();
+  const activeSupplierCount = await prisma.company.count({
+    where: { status: "APPROVED" }
+  });
+  const pendingCompaniesCount = await prisma.company.count({
+    where: { status: "PENDING" }
+  });
   const userCount = await prisma.user.count();
   const pendingRequirementsCount = await prisma.requirement.count({
     where: { status: "PENDING" }
   });
 
   const stats = [
-    { label: "Active Suppliers", value: supplierCount.toLocaleString(), color: "border-l-indigo-500" },
-    { label: "Active Buyers", value: "0", color: "border-l-teal" }, // Placeholder for buyers
+    { label: "Active Suppliers", value: activeSupplierCount.toLocaleString(), color: "border-l-indigo-500" },
+    { label: "Pending Suppliers", value: pendingCompaniesCount.toString(), sub: pendingCompaniesCount > 0 ? "Review Needed" : "All Clear", color: "border-l-teal" },
     { label: "Pending Review", value: pendingRequirementsCount.toString(), sub: pendingRequirementsCount > 0 ? "Action Required" : "Clean Queue", color: "border-l-amber-500" },
-    { label: "Platform Revenue", value: "$0", color: "border-l-green-500" },
+    { label: "Total Users", value: userCount.toLocaleString(), color: "border-l-blue" },
   ];
 
   // Fetch latest signups
@@ -33,6 +39,13 @@ export default async function AdminOverviewPage() {
     take: 10,
     orderBy: { createdAt: 'desc' },
     include: { author: { select: { name: true } } }
+  });
+
+  // Fetch pending companies
+  const pendingCompanies = await prisma.company.findMany({
+    where: { status: "PENDING" },
+    take: 10,
+    orderBy: { createdAt: 'desc' }
   });
 
   return (
@@ -63,43 +76,51 @@ export default async function AdminOverviewPage() {
       <div className="grid lg:grid-cols-3 gap-6">
         
         {/* Moderation Queue */}
-        <ModerationQueue 
-          pendingRequirements={pendingRequirements} 
-          totalCount={pendingRequirementsCount} 
-        />
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          <ModerationQueue 
+            pendingRequirements={pendingRequirements} 
+            totalCount={pendingRequirementsCount} 
+          />
+        </div>
 
-        {/* Recent Activity */}
+        <div className="lg:col-span-1 flex flex-col gap-6">
+          {/* Supplier Approvals */}
+          <CompanyModeration 
+            pendingCompanies={pendingCompanies} 
+            totalCount={pendingCompaniesCount} 
+          />
 
-        {/* Recent Activity */}
-        <div className="bg-white border border-border-brand rounded-brand-m shadow-sm flex flex-col">
-          <div className="p-4 border-b border-border-brand">
-            <h3 className="font-sans font-semibold text-sm flex items-center gap-2">
-              <Users size={16} className="text-purple" />
-              Latest Signups
-            </h3>
-          </div>
-          
-          <div className="p-4 flex flex-col gap-4">
-            {latestSignups.length > 0 ? (
-              latestSignups.map((user) => (
-                <div key={user.id} className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded bg-sand flex items-center justify-center font-serif font-bold text-xs text-ink uppercase">
-                    {user.name.charAt(0)}
+          {/* Recent Activity */}
+          <div className="bg-white border border-border-brand rounded-brand-m shadow-sm flex flex-col">
+            <div className="p-4 border-b border-border-brand">
+              <h3 className="font-sans font-semibold text-sm flex items-center gap-2">
+                <Users size={16} className="text-purple" />
+                Latest Signups
+              </h3>
+            </div>
+            
+            <div className="p-4 flex flex-col gap-4">
+              {latestSignups.length > 0 ? (
+                latestSignups.map((user) => (
+                  <div key={user.id} className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded bg-sand flex items-center justify-center font-serif font-bold text-xs text-ink uppercase">
+                      {user.name.charAt(0)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[13px] font-semibold text-ink truncate">{user.name}</div>
+                      <div className="text-[11px] text-muted">{user.company?.name || user.role}</div>
+                    </div>
+                    <Badge variant={user.role === "ADMIN" ? "pro" : "free"}>
+                      {user.role === "ADMIN" ? "Admin" : "Supplier"}
+                    </Badge>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-[13px] font-semibold text-ink truncate">{user.name}</div>
-                    <div className="text-[11px] text-muted">{user.company?.name || user.role}</div>
-                  </div>
-                  <Badge variant={user.role === "ADMIN" ? "pro" : "free"}>
-                    {user.role === "ADMIN" ? "Admin" : "Supplier"}
-                  </Badge>
+                ))
+              ) : (
+                <div className="py-8 text-center">
+                  <p className="text-[11px] text-muted italic">No signups yet</p>
                 </div>
-              ))
-            ) : (
-              <div className="py-8 text-center">
-                <p className="text-[11px] text-muted italic">No signups yet</p>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
 

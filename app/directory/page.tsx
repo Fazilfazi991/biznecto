@@ -6,6 +6,7 @@ export default async function DirectoryPage() {
   let dbCompanies: any[] = [];
   try {
     dbCompanies = await prisma.company.findMany({
+      where: { status: "APPROVED" },
       include: { items: true },
       orderBy: { createdAt: "desc" },
     });
