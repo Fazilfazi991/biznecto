@@ -167,7 +167,14 @@ export function SettingsForm({ company }: SettingsFormProps) {
           <p className="text-xs text-muted leading-relaxed mb-4">
             If you need assistance with your account or want to verify your business, contact our support team.
           </p>
-          <Button variant="outline" size="sm" className="w-full bg-white shadow-sm hover:shadow-md transition-shadow">Contact Support</Button>
+          <a 
+            href="https://wa.me/971566565471" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="block"
+          >
+            <Button variant="outline" size="sm" className="w-full bg-white shadow-sm hover:shadow-md transition-shadow">Contact Support</Button>
+          </a>
         </Card>
 
         <Card className="p-6 border-teal/20 bg-teal/5">
