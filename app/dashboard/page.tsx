@@ -31,31 +31,45 @@ export default async function DashboardOverviewPage() {
 
   // ─── SUPPLIER LOGIC ───
   let matches: any[] = [];
-  if (user.role === "SUPPLIER" && company?.tags) {
-    const companyTags = company.tags.split(",").map(t => t.trim().toLowerCase());
-    const allRequirements = await prisma.requirement.findMany({
-      where: { status: "Active" },
-      orderBy: { createdAt: "desc" },
-    });
-    matches = allRequirements.filter(req => {
-      const reqTags = req.tags.split(",").map(t => t.trim().toLowerCase());
-      return companyTags.some(tag => reqTags.includes(tag));
-    });
-    const planLimits: Record<string, number> = { FREE: 3, STARTER: 10, PRO: 25, PREMIUM: 100 };
-    const limit = planLimits[company.plan || "FREE"];
-    matches = matches.slice(0, limit);
+  try {
+    if (user.role === "SUPPLIER" && company?.tags) {
+      const companyTags = (company.tags || "").split(",").map(t => t.trim().toLowerCase()).filter(Boolean);
+      
+      const allRequirements = await prisma.requirement.findMany({
+        where: { status: "Active" },
+        orderBy: { createdAt: "desc" },
+      });
+
+      matches = allRequirements.filter(req => {
+        if (!req.tags) return false;
+        const reqTags = req.tags.split(",").map(t => t.trim().toLowerCase()).filter(Boolean);
+        return companyTags.some(tag => reqTags.includes(tag));
+      });
+
+      const planLimits: Record<string, number> = { FREE: 3, STARTER: 10, PRO: 25, PREMIUM: 100 };
+      const limit = planLimits[company.plan || "FREE"] || 3;
+      matches = matches.slice(0, limit);
+    }
+  } catch (error) {
+    console.error("Supplier matching error:", error);
+    matches = [];
   }
 
   // ─── BUYER LOGIC ───
   let userRequirements: any[] = [];
-  if (user.role === "BUYER" || user.role === "ADMIN") {
-    userRequirements = await prisma.requirement.findMany({
-      where: { authorId: user.id },
-      orderBy: { createdAt: "desc" }
-    });
+  try {
+    if (user.role === "BUYER" || user.role === "ADMIN") {
+      userRequirements = await prisma.requirement.findMany({
+        where: { authorId: session.user.id },
+        orderBy: { createdAt: "desc" }
+      });
+    }
+  } catch (error) {
+    console.error("Buyer requirements fetch error:", error);
+    userRequirements = [];
   }
 
-  // Calculate profile completeness
+  // Calculate profile completeness safely
   let completeness = 20;
   if (company?.description) completeness += 20;
   if (company?.location) completeness += 20;

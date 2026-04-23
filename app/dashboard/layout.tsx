@@ -13,8 +13,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   const user = session.user;
-  const isBuyer = user.role === "BUYER";
-  const isAdmin = user.role === "ADMIN";
+  const role = user?.role || "SUPPLIER";
+  const isBuyer = role === "BUYER";
+  const isAdmin = role === "ADMIN";
 
   const navItems = [
     { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
