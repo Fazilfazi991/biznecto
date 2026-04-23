@@ -45,12 +45,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Left: Product Image */}
           <div className="space-y-6">
-            <div className="aspect-square bg-white rounded-[32px] border border-border-brand shadow-xl overflow-hidden flex items-center justify-center relative group">
+            <div className="h-[400px] md:h-[500px] bg-white rounded-[32px] border border-border-brand shadow-xl overflow-hidden flex items-center justify-center relative group p-8">
               {product.imageUrl ? (
                 <img 
                   src={product.imageUrl} 
                   alt={product.name} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                  className="max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-105" 
                 />
               ) : (
                 <Package size={120} className="text-muted/10" />

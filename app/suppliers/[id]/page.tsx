@@ -158,30 +158,30 @@ export default async function SupplierProfilePage({ params }: { params: Promise<
             </Badge>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {company.items.length > 0 ? (
               company.items.map(product => (
                 <div key={product.id} className="group bg-white rounded-2xl overflow-hidden border border-border-brand hover:border-teal/30 hover:shadow-2xl transition-all duration-300 flex flex-col">
-                  <div className="aspect-[4/3] bg-sand relative overflow-hidden shrink-0">
+                  <div className="aspect-square bg-sand relative overflow-hidden shrink-0 p-4">
                     {product.imageUrl ? (
-                      <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-muted/20">
-                        <Package size={48} />
+                        <Package size={36} />
                       </div>
                     )}
-                    <div className="absolute top-3 left-3">
-                       <Badge className="bg-white/90 backdrop-blur-sm text-ink border-none shadow-sm">{product.category || "General"}</Badge>
+                    <div className="absolute top-2 left-2">
+                       <Badge className="bg-white/90 backdrop-blur-sm text-ink border-none shadow-sm text-[9px]">{product.category || "General"}</Badge>
                     </div>
                   </div>
-                  <div className="p-6 flex-1 flex flex-col">
+                  <div className="p-5 flex-1 flex flex-col">
                     <Link href={`/products/${product.id}`}>
-                      <h4 className="font-serif font-bold text-lg text-ink mb-2 group-hover:text-teal transition-colors leading-tight">{product.name}</h4>
+                      <h4 className="font-serif font-bold text-md text-ink mb-1 group-hover:text-teal transition-colors leading-tight">{product.name}</h4>
                     </Link>
-                    <p className="text-[13px] text-muted line-clamp-3 mb-6 leading-relaxed flex-1">{product.description || "High-quality product sourced globally."}</p>
+                    <p className="text-[11px] text-muted line-clamp-2 mb-4 leading-relaxed flex-1">{product.description || "High-quality product."}</p>
                     <div className="mt-auto">
                        <Link href={`/products/${product.id}`}>
-                          <Button variant="outline" className="w-full rounded-xl h-10 text-[12px] font-bold border-border-brand hover:bg-teal hover:text-white hover:border-teal transition-all">View Specifications</Button>
+                          <Button variant="outline" className="w-full rounded-xl h-8 text-[10px] font-bold border-border-brand hover:bg-teal hover:text-white hover:border-teal transition-all">View Details</Button>
                        </Link>
                     </div>
                   </div>
