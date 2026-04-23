@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { Package, Plus, Image as ImageIcon, Tag, FileText, AlertCircle } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
