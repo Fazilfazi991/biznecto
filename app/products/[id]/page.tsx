@@ -32,20 +32,20 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const primaryContact = company.users[0];
 
   return (
-    <main className="min-h-screen bg-sand pt-[120px] pb-20">
-      <div className="max-w-6xl mx-auto px-4">
+    <main className="min-h-screen bg-sand pt-[100px] pb-16">
+      <div className="max-w-5xl mx-auto px-4">
         {/* Breadcrumb / Back Link */}
         <Link 
           href="/directory" 
-          className="inline-flex items-center gap-2 text-muted text-xs font-bold uppercase tracking-widest mb-8 hover:text-teal transition-colors"
+          className="inline-flex items-center gap-2 text-muted text-[10px] font-bold uppercase tracking-[1.5px] mb-6 hover:text-teal transition-colors"
         >
-          <ArrowLeft size={14} /> Back to Directory
+          <ArrowLeft size={12} /> Back to Directory
         </Link>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-10">
           {/* Left: Product Image */}
           <div className="space-y-6">
-            <div className="h-[400px] md:h-[500px] bg-white rounded-[32px] border border-border-brand shadow-xl overflow-hidden flex items-center justify-center relative group p-8">
+            <div className="h-[350px] md:h-[450px] bg-white rounded-[24px] border border-border-brand shadow-xl overflow-hidden flex items-center justify-center relative group p-6">
               {product.imageUrl ? (
                 <img 
                   src={product.imageUrl} 
@@ -53,107 +53,107 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                   className="max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-105" 
                 />
               ) : (
-                <Package size={120} className="text-muted/10" />
+                <Package size={100} className="text-muted/10" />
               )}
               
-              <div className="absolute top-6 left-6">
-                 <Badge variant="teal" className="px-4 py-1.5 shadow-lg backdrop-blur-md">
+              <div className="absolute top-4 left-4">
+                 <Badge variant="teal" className="px-3 py-1 shadow-md backdrop-blur-md text-[9px]">
                     Verified Product
                  </Badge>
               </div>
             </div>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-3 gap-4">
-               <div className="bg-white p-4 rounded-2xl border border-border-brand text-center">
-                  <div className="text-[10px] font-bold text-muted uppercase mb-1">Status</div>
-                  <div className="text-xs font-bold text-teal">In Stock</div>
+            <div className="grid grid-cols-3 gap-3">
+               <div className="bg-white p-3 rounded-xl border border-border-brand text-center">
+                  <div className="text-[9px] font-bold text-muted uppercase mb-1 tracking-wider">Status</div>
+                  <div className="text-[11px] font-bold text-teal">In Stock</div>
                </div>
-               <div className="bg-white p-4 rounded-2xl border border-border-brand text-center">
-                  <div className="text-[10px] font-bold text-muted uppercase mb-1">Origin</div>
-                  <div className="text-xs font-bold text-ink">{company.location || "Global"}</div>
+               <div className="bg-white p-3 rounded-xl border border-border-brand text-center">
+                  <div className="text-[9px] font-bold text-muted uppercase mb-1 tracking-wider">Origin</div>
+                  <div className="text-[11px] font-bold text-ink">{company.location || "Global"}</div>
                </div>
-               <div className="bg-white p-4 rounded-2xl border border-border-brand text-center">
-                  <div className="text-[10px] font-bold text-muted uppercase mb-1">Lead Time</div>
-                  <div className="text-xs font-bold text-ink">7-14 Days</div>
+               <div className="bg-white p-3 rounded-xl border border-border-brand text-center">
+                  <div className="text-[9px] font-bold text-muted uppercase mb-1 tracking-wider">Lead Time</div>
+                  <div className="text-[11px] font-bold text-ink">7-14 Days</div>
                </div>
             </div>
           </div>
 
           {/* Right: Product Info & Supplier Card */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             <section>
-              <div className="flex items-center gap-2 mb-4">
-                <Badge variant="gray" className="uppercase tracking-widest px-3 py-1">
+              <div className="flex items-center gap-2 mb-3">
+                <Badge variant="gray" className="uppercase tracking-widest px-2 py-0.5 text-[9px]">
                    {product.category || "General Category"}
                 </Badge>
               </div>
-              <h1 className="font-serif font-bold text-4xl md:text-5xl text-ink leading-tight tracking-tight mb-6">
+              <h1 className="font-serif font-bold text-3xl md:text-4xl text-ink leading-[1.1] tracking-tight mb-4">
                 {product.name}
               </h1>
-              <p className="text-muted text-lg leading-relaxed mb-8 italic">
+              <p className="text-muted text-[15px] leading-relaxed mb-6 italic">
                 {product.description || "High-quality industrial grade product sourced globally through the Biznecto verified network."}
               </p>
               
-              <div className="flex flex-wrap gap-4 pt-6 border-t border-border-brand">
+              <div className="flex flex-wrap gap-3 pt-6 border-t border-border-brand">
                  <a href="#inquiry" className="flex-1">
-                    <Button className="w-full bg-teal hover:bg-teal-dark text-white py-6 rounded-2xl font-bold shadow-lg shadow-teal/20 transition-all hover:-translate-y-1">
+                    <Button className="w-full bg-teal hover:bg-teal-dark text-white py-5 rounded-xl font-bold shadow-lg shadow-teal/20 transition-all hover:-translate-y-1 text-sm">
                        Request Quote
                     </Button>
                  </a>
-                 <Button variant="outline" className="p-6 rounded-2xl border-border-brand hover:bg-sand">
-                    <Share2 size={20} />
+                 <Button variant="outline" className="p-5 rounded-xl border-border-brand hover:bg-sand">
+                    <Share2 size={18} />
                  </Button>
               </div>
             </section>
 
             {/* Supplier Preview Card */}
-            <div className="bg-white rounded-[32px] p-8 border border-border-brand shadow-sm relative overflow-hidden group">
-               <div className="absolute top-0 right-0 w-32 h-32 bg-teal/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl group-hover:bg-teal/10 transition-colors" />
+            <div className="bg-white rounded-[24px] p-6 border border-border-brand shadow-sm relative overflow-hidden group">
+               <div className="absolute top-0 right-0 w-24 h-24 bg-teal/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl group-hover:bg-teal/10 transition-colors" />
                
-               <div className="flex items-center gap-5 mb-8 relative z-10">
-                  <div className="w-16 h-16 bg-sand rounded-2xl flex items-center justify-center text-ink font-serif font-bold text-xl shrink-0 border border-border-brand">
+               <div className="flex items-center gap-4 mb-6 relative z-10">
+                  <div className="w-12 h-12 bg-sand rounded-xl flex items-center justify-center text-ink font-serif font-bold text-lg shrink-0 border border-border-brand">
                     {company.logoUrl ? (
-                      <img src={company.logoUrl} alt={company.name} className="w-full h-full object-cover rounded-2xl" />
+                      <img src={company.logoUrl} alt={company.name} className="w-full h-full object-cover rounded-xl" />
                     ) : (
                       company.name.substring(0, 1).toUpperCase()
                     )}
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-xl text-ink group-hover:text-teal transition-colors leading-tight">
+                    <h3 className="font-serif font-bold text-lg text-ink group-hover:text-teal transition-colors leading-tight">
                        {company.name}
                     </h3>
-                    <div className="flex items-center gap-1.5 text-xs text-muted font-medium mt-1">
-                       <MapPin size={14} className="text-teal" /> {company.location || "Verified Supplier"}
+                    <div className="flex items-center gap-1.5 text-[11px] text-muted font-medium mt-0.5">
+                       <MapPin size={12} className="text-teal" /> {company.location || "Verified Supplier"}
                     </div>
                   </div>
                </div>
 
-               <div className="grid grid-cols-2 gap-4 mb-8 relative z-10">
-                  <div className="bg-sand/50 p-4 rounded-2xl">
-                     <div className="text-[10px] font-bold text-muted uppercase tracking-widest mb-1">Response Rate</div>
-                     <div className="text-sm font-bold text-ink">98% Faster</div>
+               <div className="grid grid-cols-2 gap-3 mb-6 relative z-10">
+                  <div className="bg-sand/50 p-3 rounded-xl">
+                     <div className="text-[9px] font-bold text-muted uppercase tracking-widest mb-1">Response Rate</div>
+                     <div className="text-[12px] font-bold text-ink">98% Faster</div>
                   </div>
-                  <div className="bg-sand/50 p-4 rounded-2xl">
-                     <div className="text-[10px] font-bold text-muted uppercase tracking-widest mb-1">Member Since</div>
-                     <div className="text-sm font-bold text-ink">2024</div>
+                  <div className="bg-sand/50 p-3 rounded-xl">
+                     <div className="text-[9px] font-bold text-muted uppercase tracking-widest mb-1">Member Since</div>
+                     <div className="text-[12px] font-bold text-ink">2024</div>
                   </div>
                </div>
 
-               <div className="space-y-3 relative z-10">
+               <div className="space-y-2 relative z-10">
                   <Link href={`/suppliers/${company.id}`}>
-                    <Button variant="outline" className="w-full border-border-brand hover:bg-sand rounded-xl py-5 font-bold text-sm">
+                    <Button variant="outline" className="w-full border-border-brand hover:bg-sand rounded-lg py-4 font-bold text-xs">
                        View Full Profile
                     </Button>
                   </Link>
-                  <div id="inquiry" className="mt-6 pt-6 border-t border-sand">
-                     <div className="flex items-start gap-4 mb-4">
-                        <div className="w-10 h-10 rounded-full bg-teal/10 flex items-center justify-center text-teal shrink-0">
-                           <MessageSquare size={18} />
+                  <div id="inquiry" className="mt-4 pt-4 border-t border-sand">
+                     <div className="flex items-start gap-3 mb-3">
+                        <div className="w-8 h-8 rounded-full bg-teal/10 flex items-center justify-center text-teal shrink-0">
+                           <MessageSquare size={14} />
                         </div>
                         <div>
-                           <div className="text-xs font-bold text-ink">Contact {primaryContact?.name || "Sales Team"}</div>
-                           <a href={`mailto:${primaryContact?.email}`} className="text-sm text-teal hover:underline font-medium">{primaryContact?.email}</a>
+                           <div className="text-[11px] font-bold text-ink">Contact {primaryContact?.name || "Sales Team"}</div>
+                           <a href={`mailto:${primaryContact?.email}`} className="text-xs text-teal hover:underline font-medium">{primaryContact?.email}</a>
                         </div>
                      </div>
                   </div>
