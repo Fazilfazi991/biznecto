@@ -16,10 +16,10 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Biznecto | Premier B2B Sourcing & Trade Platform",
+  title: "Biznecto | Connect with Global Buyers, Suppliers & Business Opportunities",
   description: "Connect with verified global buyers and suppliers on Biznecto — the fastest-growing B2B trade platform for UAE, GCC, and international markets.",
   openGraph: {
-    title: "Biznecto | Premier B2B Sourcing & Trade Platform",
+    title: "Biznecto | Connect with Global Buyers, Suppliers & Business Opportunities",
     description: "Post buyer requirements, find verified suppliers, and grow your global trade network.",
     url: "https://biznecto.com",
     siteName: "Biznecto",
