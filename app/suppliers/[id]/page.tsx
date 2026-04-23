@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { MapPin, Globe, Package, MessageSquare, FileDown, Mail, Phone, User, CheckCircle2 } from "lucide-react";
