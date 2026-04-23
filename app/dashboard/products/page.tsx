@@ -1,5 +1,5 @@
 import React from "react";
-import { Package, Plus, Image as ImageIcon, Tag, FileText } from "lucide-react";
+import { Package, Plus, Image as ImageIcon, Tag, FileText, AlertCircle } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
