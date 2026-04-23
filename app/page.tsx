@@ -50,7 +50,7 @@ export default function Home() {
               <input 
                 type="text" 
                 placeholder="Search: steel pipes 316..." 
-                className="w-full bg-transparent border-none text-white placeholder-white/40 pl-11 pr-[100px] focus:outline-none focus:ring-0 text-[15px]" 
+                className="w-full bg-transparent border-none !text-white placeholder-white/40 pl-11 pr-[100px] focus:outline-none focus:ring-0 text-[15px]" 
               />
               <button className="absolute right-1.5 top-1.5 bottom-1.5 bg-teal hover:bg-teal-dark text-white font-semibold text-[14px] px-6 rounded-[8px] transition-colors">
                 Search
