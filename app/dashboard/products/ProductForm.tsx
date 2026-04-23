@@ -70,7 +70,17 @@ export function ProductForm() {
             folder="products"
             label="Drop product image here"
           />
-          {imageUrl && (
+          <div className="mt-2">
+            <label className="text-[10px] font-bold text-muted uppercase block mb-1">Or Paste Image URL</label>
+            <input 
+              type="text" 
+              placeholder="https://..."
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              className="w-full border border-border-brand rounded-lg px-3 py-2 text-[12px] focus:border-teal outline-none"
+            />
+          </div>
+          {imageUrl && imageUrl.startsWith('http') && (
             <div className="mt-2 relative rounded-lg overflow-hidden h-20 border border-teal/20">
               <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
             </div>

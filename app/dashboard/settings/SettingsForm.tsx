@@ -68,10 +68,20 @@ export function SettingsForm({ company }: SettingsFormProps) {
                   folder="logos"
                   label="Upload Company Logo"
                 />
-                {logoUrl && (
+                <div className="mt-2">
+                  <label className="text-[10px] font-bold text-muted uppercase block mb-1">Or Paste Logo URL</label>
+                  <input 
+                    type="text" 
+                    placeholder="https://..."
+                    value={logoUrl}
+                    onChange={(e) => setLogoUrl(e.target.value)}
+                    className="w-full border border-border-brand rounded-lg px-3 py-2 text-[12px] focus:border-teal outline-none"
+                  />
+                </div>
+                {logoUrl && logoUrl.startsWith('http') && (
                   <div className="mt-2 flex items-center gap-3 p-2 border border-teal/10 rounded-lg bg-teal/5">
                     <img src={logoUrl} alt="Logo Preview" className="w-10 h-10 object-contain rounded bg-white p-1" />
-                    <span className="text-[10px] text-teal font-medium truncate">Logo uploaded</span>
+                    <span className="text-[10px] text-teal font-medium truncate">Preview visible</span>
                   </div>
                 )}
               </div>
@@ -84,10 +94,20 @@ export function SettingsForm({ company }: SettingsFormProps) {
                   label="Upload PDF Catalogue"
                   accept=".pdf"
                 />
-                {catalogueUrl && (
+                <div className="mt-2">
+                  <label className="text-[10px] font-bold text-muted uppercase block mb-1">Or Paste Catalogue URL</label>
+                  <input 
+                    type="text" 
+                    placeholder="https://..."
+                    value={catalogueUrl}
+                    onChange={(e) => setCatalogueUrl(e.target.value)}
+                    className="w-full border border-border-brand rounded-lg px-3 py-2 text-[12px] focus:border-teal outline-none"
+                  />
+                </div>
+                {catalogueUrl && catalogueUrl.startsWith('http') && (
                   <div className="mt-2 flex items-center gap-3 p-2 border border-blue-100 rounded-lg bg-blue-50">
                     <FileDown size={16} className="text-blue" />
-                    <span className="text-[10px] text-blue font-medium truncate">Catalogue uploaded</span>
+                    <span className="text-[10px] text-blue font-medium truncate">Link attached</span>
                   </div>
                 )}
               </div>
