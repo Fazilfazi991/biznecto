@@ -105,114 +105,76 @@ export default async function DashboardOverviewPage() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 pb-20">
-        {/* New Buyer Matches Section */}
-        <Card className="flex flex-col shadow-sm border-border-brand">
+        {/* New Buyer Matches Section - LOCKED FOR PHASE 2 */}
+        <Card className="flex flex-col shadow-sm border-border-brand relative overflow-hidden">
+          {/* Phase 2 Overlay */}
+          <div className="absolute inset-0 z-10 bg-white/60 backdrop-blur-[2px] flex flex-col items-center justify-center p-6 text-center">
+            <div className="w-12 h-12 bg-sand rounded-full flex items-center justify-center mb-3 shadow-sm border border-border-brand/50">
+              <Handshake size={24} className="text-muted" />
+            </div>
+            <Badge variant="hot" className="mb-2 bg-ink text-white">PHASE 2</Badge>
+            <h4 className="font-serif font-bold text-lg text-ink mb-1">Lead Matching</h4>
+            <p className="text-[11px] text-muted max-w-[200px] leading-relaxed">
+              Automated buyer-supplier matching is coming soon in the next platform update.
+            </p>
+          </div>
+
           <CardHeader className="bg-sand/30 border-b border-sand">
-            <CardTitle className="text-sm flex items-center justify-between w-full">
+            <CardTitle className="text-sm flex items-center justify-between w-full opacity-40">
               <span className="flex items-center gap-2">
                 <span className="bg-teal/10 p-1.5 rounded-md"><Handshake size={16} className="text-teal" /></span>
                 {user?.role === "BUYER" ? "My Recent Posts" : "New Buyer Matches"}
               </span>
-              {matches.length > 0 && (
-                <Badge variant="hot" className="text-[9px] px-2">HOT LEADS</Badge>
-              )}
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-0 flex-1 flex flex-col min-h-[300px]">
-            {user?.role === "SUPPLIER" ? (
-              matches.length > 0 ? (
-                <div className="divide-y divide-sand">
-                  {matches.map((match) => (
-                    <div key={match.id} className="p-4 hover:bg-sand/20 transition-colors group">
-                      <div className="flex items-center justify-between mb-1">
-                        <h4 className="font-serif font-bold text-sm text-ink group-hover:text-teal transition-colors">
-                          {match.title}
-                        </h4>
-                        <span className="text-[10px] font-bold text-teal bg-teal/5 px-1.5 py-0.5 rounded">
-                          {match.budget}
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-muted line-clamp-1 mb-2 italic">
-                        {match.description}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] text-muted flex items-center gap-1">
-                          <Package size={10} /> {match.quantity}
-                        </span>
-                        <Link href="/requirements" className="text-[10px] font-bold text-ink hover:underline flex items-center gap-0.5">
-                          Quote Now <TrendingUp size={10} />
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex-1 flex flex-col items-center justify-center p-12 text-center">
-                  <div className="w-12 h-12 bg-sand rounded-full flex items-center justify-center mb-4">
-                    <Handshake size={20} className="text-muted/40" />
-                  </div>
-                  <h4 className="font-serif font-semibold text-sm text-ink mb-1">No matches found yet</h4>
-                  <p className="text-[11px] text-muted max-w-[200px]">Update your company tags or add more products to increase matching accuracy.</p>
-                </div>
-              )
-            ) : (
-              <div className="flex-1 flex flex-col items-center justify-center p-12 text-center">
-                 <div className="w-12 h-12 bg-sand rounded-full flex items-center justify-center mb-4">
-                    <Package size={20} className="text-muted/40" />
-                  </div>
-                  <h4 className="font-serif font-semibold text-sm text-ink mb-1">Post your first requirement</h4>
-                  <p className="text-[11px] text-muted max-w-[200px]">Get competitive quotes from verified global suppliers today.</p>
+          <CardContent className="p-0 flex-1 flex flex-col min-h-[300px] opacity-20">
+            {/* Content remains for structure but is blurred by overlay */}
+            <div className="p-12 text-center">
+              <div className="w-12 h-12 bg-sand rounded-full flex items-center justify-center mb-4 mx-auto">
+                <Handshake size={20} className="text-muted/40" />
               </div>
-            )}
+              <h4 className="font-serif font-semibold text-sm text-ink mb-1">Matching in progress</h4>
+            </div>
           </CardContent>
-          <div className="p-4 mt-auto border-t border-border-brand">
-            <Link href={user?.role === "BUYER" ? "/requirements" : "/requirements"} className="block">
-              <Button variant="outline" size="sm" className="w-full text-xs font-bold rounded-lg border-border-brand h-10">
-                {user?.role === "BUYER" ? "View Board" : "Explore All Opportunities"}
-              </Button>
-            </Link>
+          <div className="p-4 mt-auto border-t border-border-brand opacity-40">
+            <Button variant="outline" size="sm" disabled className="w-full text-xs font-bold rounded-lg border-border-brand h-10">
+              Coming Soon
+            </Button>
           </div>
         </Card>
 
-        {/* Visibility Insights */}
-        <Card className="flex flex-col shadow-sm">
+        {/* Visibility Insights - LOCKED FOR PHASE 2 */}
+        <Card className="flex flex-col shadow-sm relative overflow-hidden">
+          {/* Phase 2 Overlay */}
+          <div className="absolute inset-0 z-10 bg-white/60 backdrop-blur-[2px] flex flex-col items-center justify-center p-6 text-center">
+            <div className="w-12 h-12 bg-sand rounded-full flex items-center justify-center mb-3 shadow-sm border border-border-brand/50">
+              <Search size={24} className="text-muted" />
+            </div>
+            <Badge variant="hot" className="mb-2 bg-blue text-white">PHASE 2</Badge>
+            <h4 className="font-serif font-bold text-lg text-ink mb-1">Advanced Insights</h4>
+            <p className="text-[11px] text-muted max-w-[200px] leading-relaxed">
+              Track your profile visibility and search performance in real-time.
+            </p>
+          </div>
+
           <CardHeader>
-            <CardTitle className="text-sm flex items-center gap-2">
+            <CardTitle className="text-sm flex items-center gap-2 opacity-40">
               <span className="bg-blue-50 p-1.5 rounded-md"><Search size={16} className="text-blue" /></span>
               Visibility Insights
             </CardTitle>
           </CardHeader>
-          <CardContent className="flex-1 flex flex-col gap-6 py-8">
+          <CardContent className="flex-1 flex flex-col gap-6 py-8 opacity-20">
             <div className="flex items-center justify-between border-b border-sand pb-4">
-              <div>
-                <div className="text-[13px] font-medium text-ink mb-0.5">My Product Count</div>
-                <div className="text-[11px] text-muted italic">{productCount} items listed</div>
-              </div>
-              <div className="text-right">
-                <div className="text-[13px] font-serif font-bold text-ink">{productCount}</div>
-              </div>
+              <div className="text-[13px] font-medium text-ink mb-0.5">My Product Count</div>
+              <div className="text-[13px] font-serif font-bold text-ink">{productCount}</div>
             </div>
-            
             <div className="flex items-center justify-between border-b border-sand pb-4">
-              <div>
-                <div className="text-[13px] font-medium text-ink mb-0.5">Top performing product</div>
-                <div className="text-[11px] text-muted italic">{productCount > 0 ? "Tracking views..." : "Awaiting catalog data..."}</div>
-              </div>
-              <div className="text-right">
-                <div className="text-[13px] font-serif font-bold text-muted">0 views</div>
-              </div>
+              <div className="text-[13px] font-medium text-ink mb-0.5">Top performing product</div>
+              <div className="text-[13px] font-serif font-bold text-muted">0 views</div>
             </div>
-            
             <div className="flex items-center justify-between">
-              <div>
-                <div className="text-[13px] font-medium text-ink mb-0.5">Profile completeness</div>
-                <div className="text-[11px] text-muted">Complete your details to boost ranking</div>
-              </div>
-              <div className="text-right">
-                <div className={cn("text-[13px] font-serif font-bold", completeness === 100 ? "text-teal" : "text-amber-600")}>
-                  {completeness}%
-                </div>
-              </div>
+              <div className="text-[13px] font-medium text-ink mb-0.5">Profile completeness</div>
+              <div className="text-[13px] font-serif font-bold text-teal">{completeness}%</div>
             </div>
           </CardContent>
         </Card>
