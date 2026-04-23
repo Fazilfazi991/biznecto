@@ -12,10 +12,17 @@ export default async function SettingsPage() {
   const session = await auth();
   if (!session?.user?.id) return null;
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    include: { company: true }
-  });
+  let user: any = null;
+  try {
+    user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      include: { company: true }
+    });
+  } catch (err) {
+    console.error("Settings page fetch error:", err);
+  }
+
+  if (!user) return <div className="p-8 text-center">Loading settings...</div>;
 
   const company = user?.company;
 
