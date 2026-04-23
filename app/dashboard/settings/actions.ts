@@ -17,25 +17,49 @@ export async function updateSettings(formData: FormData) {
   try {
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      include: { company: true }
     });
 
-    if (!user?.companyId) return { success: false, error: "Company not found" };
+    if (!user) return { success: false, error: "User not found" };
 
-    await prisma.company.update({
-      where: { id: user.companyId },
-      data: {
-        name: companyName,
-        description,
-        location,
-        logoUrl,
-        catalogueUrl,
-      }
-    });
+    if (!user.companyId) {
+      // Create new company and link to user
+      const company = await prisma.company.create({
+        data: {
+          name: companyName,
+          description,
+          location,
+          logoUrl,
+          catalogueUrl,
+          tags: "", // Default empty
+          users: {
+            connect: { id: user.id }
+          }
+        }
+      });
+      
+      revalidatePath("/dashboard");
+      revalidatePath("/dashboard/settings");
+      return { success: true, companyId: company.id };
+    } else {
+      // Update existing company
+      await prisma.company.update({
+        where: { id: user.companyId },
+        data: {
+          name: companyName,
+          description,
+          location,
+          logoUrl,
+          catalogueUrl,
+        }
+      });
 
-    revalidatePath("/dashboard");
-    revalidatePath("/dashboard/settings");
+      revalidatePath("/dashboard");
+      revalidatePath("/dashboard/settings");
+      revalidatePath("/directory");
+      return { success: true };
+    }
   } catch (error: any) {
     console.error("Update settings error:", error);
+    return { success: false, error: error.message || "Failed to save changes" };
   }
 }
