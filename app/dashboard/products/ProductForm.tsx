@@ -25,7 +25,9 @@ export function ProductForm() {
     formData.set("imageUrl", imageUrl);
 
     try {
-      await addProduct(formData);
+      const result = await addProduct(formData);
+      if (!result.success) throw new Error(result.error);
+      
       setSuccess(true);
       setImageUrl("");
       (e.target as HTMLFormElement).reset();

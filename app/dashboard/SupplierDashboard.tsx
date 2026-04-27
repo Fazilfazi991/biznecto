@@ -30,8 +30,11 @@ export function SupplierDashboard({ user, company, matches, productCount, comple
           <h2 className="font-serif font-bold text-[18px] text-ink mb-1">Your Growth Hub is Ready</h2>
           <p className="text-[12px] text-muted">Complete your profile and add products to start appearing in buyer searches.</p>
         </div>
-        <Link href="/dashboard/products" className="bg-ink hover:bg-black text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-ink/10">
-          Add Products
+        <Link 
+          href={company ? "/dashboard/products" : "/dashboard/settings"} 
+          className="bg-ink hover:bg-black text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-ink/10"
+        >
+          {company ? "Add Products" : "Complete Profile First"}
         </Link>
       </div>
 

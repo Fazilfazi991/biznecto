@@ -31,7 +31,9 @@ export function SettingsForm({ company }: SettingsFormProps) {
     formData.set("catalogueUrl", catalogueUrl);
 
     try {
-      await updateSettings(formData);
+      const result = await updateSettings(formData);
+      if (!result.success) throw new Error(result.error);
+      
       setSuccess(true);
       router.refresh();
       setTimeout(() => setSuccess(false), 3000);
