@@ -30,6 +30,7 @@ export default function LoginPage() {
     const res = await signIn("credentials", {
       email: normalizedEmail,
       password: form.password,
+      loginRole: role,
       redirect: false,
     });
     
@@ -102,6 +103,24 @@ export default function LoginPage() {
               <>
                 <h1 className="font-sans font-bold text-[22px] text-ink mb-1">Welcome back</h1>
                 <p className="text-[13px] text-muted mb-6">Sign in to access your dashboard and leads.</p>
+
+                {/* Role Selector for Login */}
+                <div className="flex gap-3 mb-5">
+                  {(["SUPPLIER", "BUYER"] as const).map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => setRole(r)}
+                      className={`flex-1 py-2.5 rounded-lg border text-[13px] font-semibold transition-all ${
+                        role === r
+                          ? "border-teal bg-teal/5 text-teal"
+                          : "border-border-brand text-muted hover:border-ink/30"
+                      }`}
+                    >
+                      {r === "SUPPLIER" ? "🏭 Supplier Login" : "🛒 Buyer Login"}
+                    </button>
+                  ))}
+                </div>
 
                 <form onSubmit={handleLogin} className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1.5">

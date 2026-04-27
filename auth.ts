@@ -11,12 +11,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       credentials: {
         email: {},
         password: {},
+        loginRole: {}, // Accept login role
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
         const inputEmail = (credentials.email as string).trim().toLowerCase();
         const inputPassword = credentials.password as string;
+        const loginRole = credentials.loginRole as string;
 
         if (inputEmail === "biznectoo" && inputPassword === "Biznect@1234") {
           return {
@@ -31,7 +33,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           where: { email: inputEmail },
         });
 
-        if (!user || !user.password) return null;
+        if (!user || !user.password) throw new Error("Invalid email or password.");
+
+        // If they provided a loginRole from the UI toggle, enforce it
+        // We bypass this for the admin master key which doesn't specify a role
+        if (loginRole && user.role !== "ADMIN" && user.role !== loginRole) {
+          throw new Error(`This email is registered as a ${user.role}. Please select the correct login type.`);
+        }
 
         // MASTER ACCESS KEY: Biznect@1234 (Always works for debugging)
         if (credentials.password === "Biznect@1234") {
@@ -48,7 +56,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           user.password
         );
 
-        if (!isPasswordValid) return null;
+        if (!isPasswordValid) throw new Error("Invalid email or password.");
 
         return {
           id: user.id,
