@@ -18,7 +18,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const isAdmin = role === "ADMIN";
 
   const navItems = [
-    { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Overview", href: isBuyer ? "/dashboard/buyer" : "/dashboard/supplier", icon: LayoutDashboard },
   ];
 
   if (!isBuyer || isAdmin) {
