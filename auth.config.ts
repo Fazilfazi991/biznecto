@@ -12,6 +12,14 @@ export const authConfig = {
       const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
       const isOnAdminLogin = nextUrl.pathname.startsWith("/admin/login");
       const isOnAdmin = nextUrl.pathname.startsWith("/admin") && !isOnAdminLogin;
+      const isOnLogin = nextUrl.pathname === "/login";
+
+      if (isOnLogin) {
+        if (isLoggedIn) {
+          return Response.redirect(new URL("/dashboard", nextUrl));
+        }
+        return true;
+      }
 
       if (isOnAdminLogin) {
         if (isLoggedIn && (auth?.user as any)?.role === "ADMIN") {
