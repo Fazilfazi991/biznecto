@@ -1,15 +1,12 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  // Allow images from external sources
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "flagcdn.com" },
       { protocol: "https", hostname: "**.supabase.co" },
     ],
   },
-
-  // Silence Prisma/bcrypt warnings during Vercel builds
+  output: 'standalone',
   serverExternalPackages: ["@prisma/client", "bcryptjs"],
 };
 
