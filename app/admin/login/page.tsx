@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
     if (res?.error) {
       setError("Invalid admin credentials.");
     } else {
-      router.push("/admin");
+      window.location.href = "/admin";
     }
   };
 
