@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { submitInquiry } from "@/app/requirements/actions";
 import { useRouter } from "next/navigation";
-import { CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { CheckCircle2, AlertCircle, Loader2, Info } from "lucide-react";
 
 interface InquiryFormProps {
   requirementId: string;
