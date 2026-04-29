@@ -6,6 +6,7 @@ import { SupplierManagement } from "./SupplierManagement";
 export default async function AdminSuppliersPage() {
   const companies = await prisma.company.findMany({
     orderBy: { createdAt: "desc" },
+    include: { users: true },
   });
 
   return (

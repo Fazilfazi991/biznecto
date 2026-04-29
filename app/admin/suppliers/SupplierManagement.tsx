@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircle2, XCircle, Loader2, Building2, Globe, Eye, User, Calendar, Tag, FileText } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Building2, Globe, Eye, User, Calendar, Tag, FileText, Mail } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
@@ -191,6 +191,20 @@ export function SupplierManagement({ initialCompanies }: SupplierManagementProps
                     {selectedCompany.description || "No company description provided."}
                   </p>
                 </div>
+
+                {selectedCompany.users?.[0] && (
+                  <div className="pt-2">
+                    <label className="text-[10px] font-bold text-muted uppercase tracking-widest mb-2 block">Primary Contact</label>
+                    <div className="bg-white border border-border-brand rounded-xl p-3 flex flex-col gap-2">
+                      <div className="flex items-center gap-2 text-xs font-bold text-ink">
+                        <User size={14} className="text-purple" /> {selectedCompany.users[0].name}
+                      </div>
+                      <div className="flex items-center gap-2 text-[11px] text-muted">
+                        <Mail size={14} className="text-teal" /> {selectedCompany.users[0].email}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
