@@ -127,9 +127,11 @@ export default async function RequirementsPage() {
                   </div>
 
                   <div className="md:w-48 shrink-0 flex flex-col justify-end">
-                    <Button variant="primary" className="w-full bg-ink hover:bg-black text-white font-bold py-3 rounded-xl shadow-lg shadow-ink/10">
-                      Send Quote
-                    </Button>
+                    <Link href={`/requirements/${req.id}/quote`}>
+                      <Button variant="primary" className="w-full bg-ink hover:bg-black text-white font-bold py-3 rounded-xl shadow-lg shadow-ink/10">
+                        Send Quote
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </div>
