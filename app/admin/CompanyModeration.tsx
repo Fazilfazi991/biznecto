@@ -58,6 +58,11 @@ export function CompanyModeration({ pendingCompanies, totalCount }: CompanyModer
                     <span className="w-1 h-1 rounded-full bg-border-brand" />
                     <span>{new Date(company.createdAt).toLocaleDateString()}</span>
                   </div>
+                  {company.users?.[0] && (
+                    <div className="text-[10px] text-teal font-bold mt-1 uppercase">
+                      Contact: {company.users[0].name} ({company.users[0].email})
+                    </div>
+                  )}
                 </div>
               </div>
               

@@ -6,10 +6,11 @@ import { Badge } from "@/components/ui/Badge";
 import { MapPin, ShoppingCart, CircleDollarSign, Calendar, Globe, ShieldCheck } from "lucide-react";
 import { InquiryForm } from "./InquiryForm";
 
-export default async function RequirementQuotePage({ params }: { params: { id: string } }) {
+export default async function RequirementQuotePage({ params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params;
     const requirement = await prisma.requirement.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { author: { select: { name: true, email: true } } }
     });
 

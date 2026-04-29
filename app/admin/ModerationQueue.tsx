@@ -54,7 +54,7 @@ export function ModerationQueue({ pendingRequirements, totalCount }: ModerationQ
                   <span className="w-1 h-1 rounded-full bg-border-brand" />
                   <span>{new Date(req.createdAt).toLocaleDateString()}</span>
                   <span className="w-1 h-1 rounded-full bg-border-brand" />
-                  <span className="text-ink font-medium">By {req.author?.name || "Unknown"}</span>
+                  <span className="text-ink font-medium">By {req.author?.name || "Unknown"} ({req.author?.email})</span>
                 </div>
               </div>
               <div className="flex gap-2 shrink-0">

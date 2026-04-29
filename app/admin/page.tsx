@@ -39,14 +39,15 @@ export default async function AdminOverviewPage() {
     where: { status: "PENDING" },
     take: 10,
     orderBy: { createdAt: 'desc' },
-    include: { author: { select: { name: true } } }
+    include: { author: { select: { name: true, email: true } } }
   });
 
   // Fetch pending companies
   const pendingCompanies = await prisma.company.findMany({
     where: { status: "PENDING" },
     take: 10,
-    orderBy: { createdAt: 'desc' }
+    orderBy: { createdAt: 'desc' },
+    include: { users: { select: { name: true, email: true } } }
   });
 
   return (
