@@ -69,7 +69,7 @@ export function RequirementManagement({ initialRequirements }: RequirementManage
                 <td className="px-6 py-4">
                   <Badge variant={
                     req.status === "Active" || req.status === "APPROVED" ? "pro" : 
-                    req.status === "PENDING" ? "free" : "default"
+                    req.status === "PENDING" ? "free" : "gray"
                   }>
                     {req.status}
                   </Badge>

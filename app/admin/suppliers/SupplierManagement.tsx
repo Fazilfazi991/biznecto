@@ -70,7 +70,7 @@ export function SupplierManagement({ initialCompanies }: SupplierManagementProps
                 <td className="px-6 py-4">
                   <Badge variant={
                     company.status === "APPROVED" ? "pro" : 
-                    company.status === "PENDING" ? "free" : "default"
+                    company.status === "PENDING" ? "free" : "gray"
                   }>
                     {company.status}
                   </Badge>
