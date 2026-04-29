@@ -152,6 +152,17 @@ export async function submitInquiry(formData: FormData) {
       return { success: false, error: "Missing required fields." };
     }
 
+    const senderId = session?.user?.id;
+    let validSenderId = null;
+
+    if (senderId && senderId !== "admin") {
+      const userExists = await prisma.user.findUnique({
+        where: { id: senderId },
+        select: { id: true }
+      });
+      if (userExists) validSenderId = senderId;
+    }
+
     await prisma.inquiry.create({
       data: {
         message,
@@ -161,7 +172,7 @@ export async function submitInquiry(formData: FormData) {
         contactPhone,
         country,
         requirementId,
-        senderId: session?.user?.id || null,
+        senderId: validSenderId,
       },
     });
 
