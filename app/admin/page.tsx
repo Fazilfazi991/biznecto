@@ -1,4 +1,5 @@
 import React from "react";
+export const dynamic = "force-dynamic";
 import { Users, AlertCircle, Building2, Package, LayoutDashboard, Search } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
