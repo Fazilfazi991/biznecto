@@ -18,6 +18,7 @@ export default function NewListingPage() {
     companyName: "",
     description: "",
     location: "",
+    category: "Agriculture",
     tags: "",
     supplierName: "",
     email: "",
@@ -166,6 +167,20 @@ export default function NewListingPage() {
               className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
             />
           </div>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Primary Category *</label>
+          <select
+            name="category"
+            value={form.category}
+            onChange={(e: any) => setForm({ ...form, category: e.target.value })}
+            className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none bg-white"
+          >
+            {["Agriculture", "Food & Beverage", "Technology", "Healthcare", "Construction", "Energy", "Apparel"].map((cat) => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
         </div>
 
         <div className="pb-3 border-b border-border-brand pt-2">

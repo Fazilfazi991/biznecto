@@ -51,10 +51,14 @@ export async function createSupplierAccount(formData: FormData) {
     const companyName = formData.get("companyName") as string;
     const description = formData.get("description") as string;
     const location = formData.get("location") as string;
-    const tags = formData.get("tags") as string;
+    const category = formData.get("category") as string;
+    const rawTags = formData.get("tags") as string;
     const supplierName = formData.get("supplierName") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+
+    // Combine category with tags
+    const tags = rawTags ? `${category}, ${rawTags}` : category;
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) return { success: false, error: "Email already exists" };
