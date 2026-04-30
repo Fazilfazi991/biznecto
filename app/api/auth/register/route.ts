@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, password, role } = await req.json();
+    const { name, email, password, role, category } = await req.json();
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
     const prefix = role === "BUYER" ? "BYR_" : "SUP_";
     const customId = `${prefix}${crypto.randomUUID().replace(/-/g, "").substring(0, 12)}`;
 
+    // Create user and company if supplier
     const user = await prisma.user.create({
       data: {
         id: customId,
@@ -34,6 +35,13 @@ export async function POST(req: NextRequest) {
         email,
         password: hashedPassword,
         role: role || "SUPPLIER",
+        company: role === "SUPPLIER" ? {
+          create: {
+            name: `${name}'s Company`,
+            tags: category || "Agriculture",
+            status: "PENDING",
+          }
+        } : undefined,
       },
     });
 

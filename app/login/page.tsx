@@ -10,7 +10,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [tab, setTab] = useState<"login" | "register">("login");
   const [role, setRole] = useState<"SUPPLIER" | "BUYER">("SUPPLIER");
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", category: "Agriculture" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -212,6 +212,21 @@ export default function LoginPage() {
                       className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
                     />
                   </div>
+                  {role === "SUPPLIER" && (
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Business Category</label>
+                      <select
+                        name="category"
+                        value={form.category}
+                        onChange={(e: any) => setForm({ ...form, category: e.target.value })}
+                        className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none bg-white"
+                      >
+                        {["Agriculture", "Food & Beverage", "Technology", "Healthcare", "Construction", "Energy", "Apparel"].map((cat) => (
+                          <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                   {error && <p className="text-red-500 text-[12px] font-medium">{error}</p>}
                   <button
                     type="submit" disabled={loading}

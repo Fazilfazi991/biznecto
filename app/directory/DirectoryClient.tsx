@@ -53,7 +53,7 @@ export default function DirectoryClient({ dbCompanies }: { dbCompanies: any[] })
             </div>
             
             <div className="flex flex-col gap-2">
-              {["All", "Construction", "Electronics", "Textiles", "Chemicals", "Metals"].map((tag) => (
+              {["All", "Agriculture", "Food & Beverage", "Technology", "Healthcare", "Construction", "Energy", "Apparel"].map((tag) => (
                 <button
                   key={tag}
                   onClick={() => setSelectedTag(tag)}

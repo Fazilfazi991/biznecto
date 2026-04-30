@@ -13,6 +13,7 @@ export async function updateSettings(formData: FormData) {
   const location = formData.get("location") as string;
   const logoUrl = formData.get("logoUrl") as string;
   const catalogueUrl = formData.get("catalogueUrl") as string;
+  const tags = formData.get("tags") as string;
 
   try {
     const user = await prisma.user.findUnique({
@@ -30,7 +31,7 @@ export async function updateSettings(formData: FormData) {
           location,
           logoUrl,
           catalogueUrl,
-          tags: "", // Default empty
+          tags: tags || "", 
           users: {
             connect: { id: user.id }
           }
@@ -50,6 +51,7 @@ export async function updateSettings(formData: FormData) {
           location,
           logoUrl,
           catalogueUrl,
+          tags,
         }
       });
 

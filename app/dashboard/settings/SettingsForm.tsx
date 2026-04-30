@@ -129,6 +129,19 @@ export function SettingsForm({ company }: SettingsFormProps) {
             </div>
 
             <div className="grid gap-1.5">
+              <label className="text-[11px] font-bold text-muted uppercase tracking-widest">Business Category</label>
+              <select
+                name="tags"
+                defaultValue={company?.tags || "Agriculture"}
+                className="w-full border border-border-brand rounded-xl px-4 py-3 text-sm focus:border-teal focus:ring-4 focus:ring-teal/5 outline-none transition-all bg-white"
+              >
+                {["Agriculture", "Food & Beverage", "Technology", "Healthcare", "Construction", "Energy", "Apparel"].map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="grid gap-1.5">
               <label className="text-[11px] font-bold text-muted uppercase tracking-widest">Company Description</label>
               <textarea 
                 name="description"
