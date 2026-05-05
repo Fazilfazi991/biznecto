@@ -101,3 +101,57 @@ export async function createSupplierAccount(formData: FormData) {
     return { success: false, error: error.message };
   }
 }
+
+export async function updateSupplier(formData: FormData) {
+  try {
+    const session = await auth();
+    if (session?.user?.role !== "ADMIN") return { success: false, error: "Unauthorized" };
+
+    const id = formData.get("id") as string;
+    const name = formData.get("name") as string;
+    const description = formData.get("description") as string;
+    const location = formData.get("location") as string;
+    const tags = formData.get("tags") as string;
+    const catalogueUrl = formData.get("catalogueUrl") as string;
+
+    await prisma.company.update({
+      where: { id },
+      data: {
+        name,
+        description,
+        location,
+        tags,
+        catalogueUrl: catalogueUrl || null,
+      },
+    });
+
+    revalidatePath("/admin");
+    revalidatePath("/directory");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Admin update supplier error:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deleteSupplier(id: string) {
+  try {
+    const session = await auth();
+    if (session?.user?.role !== "ADMIN") return { success: false, error: "Unauthorized" };
+
+    // Delete associated products and users first to satisfy foreign key constraints
+    await prisma.$transaction([
+      prisma.product.deleteMany({ where: { companyId: id } }),
+      prisma.user.deleteMany({ where: { companyId: id } }),
+      prisma.company.delete({ where: { id } })
+    ]);
+
+    revalidatePath("/admin");
+    revalidatePath("/directory");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Admin delete supplier error:", error);
+    return { success: false, error: error.message };
+  }
+}
+

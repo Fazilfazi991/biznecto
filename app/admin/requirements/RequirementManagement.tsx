@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import { 
   CheckCircle2, XCircle, Loader2, Package, Eye, User, Calendar, 
-  Tag, FileText, Mail, Phone, Info, ShoppingCart, DollarSign, Clock 
+  Tag, FileText, Mail, Phone, Info, ShoppingCart, DollarSign, Clock, Trash2
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
-import { approveRequirement, rejectRequirement } from "@/app/requirements/actions";
+import { approveRequirement, rejectRequirement, deleteRequirement } from "@/app/requirements/actions";
 import { useRouter } from "next/navigation";
 
 interface RequirementManagementProps {
@@ -28,6 +28,19 @@ export function RequirementManagement({ initialRequirements }: RequirementManage
       if (selectedReq?.id === id) {
         setSelectedReq(null);
       }
+    } else {
+      alert(result.error);
+    }
+    setProcessingId(null);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this requirement? This action cannot be undone.")) return;
+    setProcessingId(id);
+    const result = await deleteRequirement(id);
+    if (result.success) {
+      router.refresh();
+      if (selectedReq?.id === id) setSelectedReq(null);
     } else {
       alert(result.error);
     }
@@ -76,6 +89,16 @@ export function RequirementManagement({ initialRequirements }: RequirementManage
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      disabled={!!processingId}
+                      onClick={() => handleDelete(req.id)}
+                      className="h-8 px-3 text-[11px] font-bold rounded-lg text-red-600 hover:text-red-700 hover:bg-red-50 border-red-100"
+                    >
+                      {processingId === req.id ? <Loader2 size={14} className="animate-spin mr-1.5" /> : <Trash2 size={14} className="mr-1.5" />}
+                      Delete
+                    </Button>
                     <Button 
                       variant="outline" 
                       size="sm" 

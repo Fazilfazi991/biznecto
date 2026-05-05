@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircle2, XCircle, Loader2, Building2, Globe, Eye, User, Calendar, Tag, FileText, Mail } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Building2, Globe, Eye, User, Calendar, Tag, FileText, Mail, Edit2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
-import { approveCompany, rejectCompany } from "@/app/admin/actions";
+import { approveCompany, rejectCompany, updateSupplier, deleteSupplier } from "@/app/admin/actions";
 import { useRouter } from "next/navigation";
 
 interface SupplierManagementProps {
@@ -15,7 +15,24 @@ interface SupplierManagementProps {
 export function SupplierManagement({ initialCompanies }: SupplierManagementProps) {
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<any | null>(null);
+  const [editingCompany, setEditingCompany] = useState<any | null>(null);
+  const [editLoading, setEditLoading] = useState(false);
   const router = useRouter();
+
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setEditLoading(true);
+    const formData = new FormData(e.currentTarget);
+    formData.append("id", editingCompany.id);
+    const result = await updateSupplier(formData);
+    setEditLoading(false);
+    if (result.success) {
+      setEditingCompany(null);
+      router.refresh();
+    } else {
+      alert(result.error);
+    }
+  };
 
   const handleAction = async (id: string, action: "approve" | "reject") => {
     setProcessingId(id);
@@ -25,6 +42,20 @@ export function SupplierManagement({ initialCompanies }: SupplierManagementProps
       if (selectedCompany?.id === id) {
         setSelectedCompany(null);
       }
+    } else {
+      alert(result.error);
+    }
+    setProcessingId(null);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this supplier? This action cannot be undone.")) return;
+    setProcessingId(id);
+    const result = await deleteSupplier(id);
+    if (result.success) {
+      router.refresh();
+      if (selectedCompany?.id === id) setSelectedCompany(null);
+      if (editingCompany?.id === id) setEditingCompany(null);
     } else {
       alert(result.error);
     }
@@ -77,6 +108,25 @@ export function SupplierManagement({ initialCompanies }: SupplierManagementProps
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      disabled={!!processingId}
+                      onClick={() => handleDelete(company.id)}
+                      className="h-8 px-3 text-[11px] font-bold rounded-lg text-red-600 hover:text-red-700 hover:bg-red-50 border-red-100"
+                    >
+                      {processingId === company.id ? <Loader2 size={14} className="animate-spin mr-1.5" /> : <Trash2 size={14} className="mr-1.5" />}
+                      Delete
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => setEditingCompany(company)}
+                      className="h-8 px-3 text-[11px] font-bold rounded-lg"
+                    >
+                      <Edit2 size={14} className="mr-1.5" />
+                      Edit
+                    </Button>
                     <Button 
                       variant="outline" 
                       size="sm" 
@@ -229,6 +279,66 @@ export function SupplierManagement({ initialCompanies }: SupplierManagementProps
               </div>
             )}
           </div>
+        )}
+      </Modal>
+
+      {/* Edit Modal */}
+      <Modal 
+        isOpen={!!editingCompany} 
+        onClose={() => setEditingCompany(null)}
+        title="Edit Supplier"
+        className="max-w-2xl"
+      >
+        {editingCompany && (
+          <form onSubmit={handleEditSubmit} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Company Name</label>
+              <input
+                name="name" type="text" required defaultValue={editingCompany.name}
+                className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
+              />
+            </div>
+            
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Location</label>
+              <input
+                name="location" type="text" defaultValue={editingCompany.location || ""}
+                className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Tags / Categories (comma separated)</label>
+              <input
+                name="tags" type="text" defaultValue={editingCompany.tags || ""}
+                className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Description</label>
+              <textarea
+                name="description" rows={4} defaultValue={editingCompany.description || ""}
+                className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Catalogue URL</label>
+              <input
+                name="catalogueUrl" type="url" defaultValue={editingCompany.catalogueUrl || ""}
+                className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
+              />
+            </div>
+
+            <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-border-brand">
+              <Button type="button" variant="outline" onClick={() => setEditingCompany(null)}>Cancel</Button>
+              <Button type="submit" variant="primary" disabled={editLoading} className="bg-teal hover:bg-teal-dark text-white">
+                {editLoading ? <Loader2 size={16} className="animate-spin mr-2" /> : null}
+                Save Changes
+              </Button>
+            </div>
+          </form>
         )}
       </Modal>
     </div>

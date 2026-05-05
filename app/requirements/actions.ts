@@ -94,10 +94,11 @@ export async function deleteRequirement(id: string) {
       return { success: false, error: "Unauthorized." };
     }
 
-    await prisma.requirement.delete({
-      where: { id },
-    });
-
+    // Delete inquiries first to satisfy foreign key constraints
+    await prisma.$transaction([
+      prisma.inquiry.deleteMany({ where: { requirementId: id } }),
+      prisma.requirement.delete({ where: { id } })
+    ]);
     revalidatePath("/requirements");
     revalidatePath("/dashboard");
     revalidatePath("/admin");

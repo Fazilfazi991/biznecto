@@ -19,6 +19,7 @@ export default function NewListingPage() {
     description: "",
     location: "",
     category: "Agriculture",
+    customCategory: "",
     tags: "",
     supplierName: "",
     email: "",
@@ -40,12 +41,15 @@ export default function NewListingPage() {
     setError("");
 
     const formData = new FormData(e.currentTarget);
+    if (form.category === "Other" && form.customCategory) {
+      formData.set("category", form.customCategory);
+    }
     const result = await createSupplierAccount(formData);
 
     setLoading(false);
     if (result.success) {
       setSuccess({ companyName: result.companyName!, email: result.email!, password: result.password! });
-      setForm({ companyName: "", description: "", location: "", tags: "", supplierName: "", email: "", password: "" });
+      setForm({ companyName: "", description: "", location: "", category: "Agriculture", customCategory: "", tags: "", supplierName: "", email: "", password: "" });
     } else {
       setError(result.error || "Failed to create account.");
     }
@@ -177,10 +181,26 @@ export default function NewListingPage() {
             onChange={(e: any) => setForm({ ...form, category: e.target.value })}
             className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none bg-white"
           >
-            {["Agriculture", "Food & Beverage", "Technology", "Healthcare", "Construction", "Energy", "Apparel"].map((cat) => (
+            {[
+              "Agriculture", "Food & Beverage", "Technology", "Healthcare", 
+              "Construction", "Energy", "Apparel", "Manufacturing", 
+              "Automotive", "Textiles", "Chemicals", "Logistics", 
+              "Services", "Other"
+            ].map((cat) => (
               <option key={cat} value={cat}>{cat}</option>
             ))}
           </select>
+          {form.category === "Other" && (
+            <input
+              type="text"
+              name="customCategory"
+              placeholder="Enter custom category"
+              value={form.customCategory}
+              onChange={(e: any) => setForm({ ...form, customCategory: e.target.value })}
+              className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none mt-2"
+              required={form.category === "Other"}
+            />
+          )}
         </div>
 
         <div className="pb-3 border-b border-border-brand pt-2">
