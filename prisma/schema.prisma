@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  engineType = "library"
+  engineType = "binary"
 }
 
 datasource db {
@@ -43,6 +43,11 @@ model Company {
   isVerified  Boolean  @default(false)
   plan        Plan     @default(FREE)
   status      String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  
+  stripeCustomerId       String?
+  stripeSubscriptionId   String?
+  stripePriceId          String?
+  stripeCurrentPeriodEnd DateTime?
   
   users       User[]
   items       Product[] // NEW: Real products

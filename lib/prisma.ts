@@ -18,7 +18,9 @@ function createPrismaClient(): PrismaClient {
 
   const pool = new Pool({
     connectionString,
+    max: 2, // Limit concurrent connections to prevent process spikes
     connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 30000,
     ssl: { rejectUnauthorized: false },
   });
 
@@ -37,9 +39,7 @@ export const prisma = new Proxy({} as PrismaClient, {
   get(_target, prop) {
     if (!_prisma) {
       _prisma = global.__prisma ?? createPrismaClient();
-      if (process.env.NODE_ENV !== "production") {
-        global.__prisma = _prisma;
-      }
+      global.__prisma = _prisma;
     }
     return (_prisma as any)[prop];
   },

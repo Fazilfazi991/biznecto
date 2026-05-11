@@ -177,6 +177,27 @@ export function SettingsForm({ company }: SettingsFormProps) {
       </div>
 
       <div className="space-y-6">
+        <Card className="p-6">
+           <h3 className="font-serif font-bold text-[15px] mb-4">Billing & Subscription</h3>
+           <div className="space-y-4">
+              <div className="flex justify-between items-center text-xs">
+                 <span className="text-muted">Current Plan</span>
+                 <span className={`font-bold uppercase tracking-wider ${company?.plan === 'FREE' ? 'text-gray-500' : 'text-teal'}`}>{company?.plan || "FREE"}</span>
+              </div>
+              <div className="pt-2">
+                 {company?.stripeCustomerId ? (
+                    <a href="/api/stripe/portal" className="block w-full">
+                       <Button type="button" variant="outline" size="sm" className="w-full">Manage Subscription</Button>
+                    </a>
+                 ) : (
+                    <a href="/pricing" className="block w-full">
+                       <Button type="button" size="sm" className="w-full bg-teal hover:bg-teal-dark text-white">Upgrade Plan</Button>
+                    </a>
+                 )}
+              </div>
+           </div>
+        </Card>
+
         <Card className="p-6 bg-sand border-none">
           <h3 className="font-serif font-bold text-[15px] mb-2">Need Help?</h3>
           <p className="text-xs text-muted leading-relaxed mb-4">
