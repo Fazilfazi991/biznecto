@@ -18,7 +18,7 @@ function createPrismaClient(): PrismaClient {
 
   const pool = new Pool({
     connectionString,
-    max: 2, // Limit concurrent connections to prevent process spikes
+    max: 10,
     connectionTimeoutMillis: 10000,
     idleTimeoutMillis: 30000,
     ssl: { rejectUnauthorized: false },
