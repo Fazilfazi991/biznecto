@@ -7,37 +7,34 @@ export const authConfig = {
     signIn: "/login",
   },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
-      const isOnAdminLogin = nextUrl.pathname.startsWith("/admin/login");
-      const isOnAdmin = nextUrl.pathname.startsWith("/admin") && !isOnAdminLogin;
-      const isOnLogin = nextUrl.pathname === "/login";
+    authorized({ auth: session, request: { nextUrl } }) {
+      const isLoggedIn = !!session?.user;
+      const role = (session?.user as any)?.role;
+      const { pathname } = nextUrl;
 
-      if (isOnLogin) {
-        if (isLoggedIn) {
-          return Response.redirect(new URL("/dashboard", nextUrl));
+      const isOnDashboard = pathname.startsWith("/dashboard");
+      const isOnAdminLogin = pathname.startsWith("/admin/login");
+      const isOnAdmin = pathname.startsWith("/admin") && !isOnAdminLogin;
+
+      if (isOnAdminLogin) {
+        if (isLoggedIn && role === "ADMIN") {
+          return Response.redirect(new URL("/admin", nextUrl));
         }
         return true;
       }
 
-      if (isOnAdminLogin) {
-        if (isLoggedIn && (auth?.user as any)?.role === "ADMIN") {
-          return Response.redirect(new URL("/admin", nextUrl));
-        }
-        return true; // allow unauthenticated to see admin login
-      }
-
       if (isOnAdmin) {
-        if (isLoggedIn && (auth?.user as any)?.role === "ADMIN") return true;
-        // Redirect unauthenticated admin visitors to the admin login page
+        if (isLoggedIn && role === "ADMIN") return true;
         return Response.redirect(new URL("/admin/login", nextUrl));
       }
 
       if (isOnDashboard) {
         if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
+        const loginUrl = new URL("/login", nextUrl);
+        loginUrl.searchParams.set("callbackUrl", pathname);
+        return Response.redirect(loginUrl);
       }
+
       return true;
     },
     async jwt({ token, user }) {
