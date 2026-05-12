@@ -1,8 +1,8 @@
-import { auth } from "@/auth";
+import NextAuth from "next-auth";
+import { authConfig } from "@/auth.config";
 
-export const proxy = auth;
+export const { auth: proxy } = NextAuth(authConfig);
 
-// Protect dashboard and admin routes
 export const config = {
   matcher: ["/dashboard/:path*", "/admin/:path*"],
 };
