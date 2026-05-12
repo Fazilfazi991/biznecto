@@ -323,12 +323,45 @@ export function SupplierManagement({ initialCompanies }: SupplierManagementProps
               />
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Catalogue URL</label>
-              <input
-                name="catalogueUrl" type="url" defaultValue={editingCompany.catalogueUrl || ""}
-                className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Catalogue URL</label>
+                <input
+                  name="catalogueUrl" type="url" defaultValue={editingCompany.catalogueUrl || ""}
+                  className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Logo URL</label>
+                <input
+                  name="logoUrl" type="url" defaultValue={editingCompany.logoUrl || ""}
+                  className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 items-center mt-2">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Member Plan</label>
+                <select
+                  name="plan" defaultValue={editingCompany.plan || "FREE"}
+                  className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none bg-white"
+                >
+                  <option value="FREE">FREE</option>
+                  <option value="STARTER">STARTER</option>
+                  <option value="PRO">PRO</option>
+                  <option value="PREMIUM">PREMIUM</option>
+                </select>
+              </div>
+
+              <div className="flex items-center gap-2 mt-4">
+                <input
+                  name="isPremium" type="checkbox" id="isPremium" defaultChecked={editingCompany.isPremium || false}
+                  className="w-4 h-4 text-teal border-border-brand rounded focus:ring-teal"
+                />
+                <label htmlFor="isPremium" className="text-[13px] font-semibold text-ink">Premium Member</label>
+              </div>
             </div>
 
             <div className="flex justify-end gap-3 mt-4 pt-4 border-t border-border-brand">

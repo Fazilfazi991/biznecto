@@ -21,6 +21,8 @@ export default function NewListingPage() {
     category: "Agriculture",
     customCategory: "",
     tags: "",
+    logoUrl: "",
+    plan: "FREE",
     supplierName: "",
     email: "",
     password: "",
@@ -49,7 +51,7 @@ export default function NewListingPage() {
     setLoading(false);
     if (result.success) {
       setSuccess({ companyName: result.companyName!, email: result.email!, password: result.password! });
-      setForm({ companyName: "", description: "", location: "", category: "Agriculture", customCategory: "", tags: "", supplierName: "", email: "", password: "" });
+      setForm({ companyName: "", description: "", location: "", category: "Agriculture", customCategory: "", tags: "", logoUrl: "", plan: "FREE", supplierName: "", email: "", password: "" });
     } else {
       setError(result.error || "Failed to create account.");
     }
@@ -170,6 +172,32 @@ export default function NewListingPage() {
               placeholder="e.g. Premium, ISO Certified"
               className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
             />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Logo URL</label>
+            <input
+              name="logoUrl" type="url"
+              value={form.logoUrl} onChange={handleChange}
+              placeholder="https://example.com/logo.png"
+              className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[11px] font-bold text-muted uppercase tracking-wide">Member Plan</label>
+            <select
+              name="plan"
+              value={form.plan}
+              onChange={(e: any) => setForm({ ...form, plan: e.target.value })}
+              className="border border-border-brand rounded-lg px-4 py-2.5 text-[14px] focus:border-teal focus:outline-none bg-white"
+            >
+              <option value="FREE">FREE</option>
+              <option value="STARTER">STARTER</option>
+              <option value="PRO">PRO</option>
+              <option value="PREMIUM">PREMIUM</option>
+            </select>
           </div>
         </div>
 

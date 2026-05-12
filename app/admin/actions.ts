@@ -56,6 +56,8 @@ export async function createSupplierAccount(formData: FormData) {
     const supplierName = formData.get("supplierName") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    const logoUrl = formData.get("logoUrl") as string;
+    const plan = (formData.get("plan") as string) || "FREE";
 
     // Combine category with tags
     const tags = rawTags ? `${category}, ${rawTags}` : category;
@@ -72,6 +74,9 @@ export async function createSupplierAccount(formData: FormData) {
         description,
         location,
         tags,
+        logoUrl: logoUrl || null,
+        plan: plan as any,
+        isPremium: plan !== "FREE",
         status: "APPROVED",
         isVerified: true,
       }
@@ -113,6 +118,9 @@ export async function updateSupplier(formData: FormData) {
     const location = formData.get("location") as string;
     const tags = formData.get("tags") as string;
     const catalogueUrl = formData.get("catalogueUrl") as string;
+    const logoUrl = formData.get("logoUrl") as string;
+    const plan = formData.get("plan") as string;
+    const isPremium = formData.get("isPremium") === "true" || formData.get("isPremium") === "on";
 
     await prisma.company.update({
       where: { id },
@@ -122,6 +130,9 @@ export async function updateSupplier(formData: FormData) {
         location,
         tags,
         catalogueUrl: catalogueUrl || null,
+        logoUrl: logoUrl || null,
+        ...(plan && { plan: plan as any }),
+        ...(formData.has("isPremium") && { isPremium }),
       },
     });
 
