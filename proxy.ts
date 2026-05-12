@@ -1,7 +1,6 @@
-import NextAuth from "next-auth";
-import { authConfig } from "@/auth.config";
+import { auth } from "@/auth";
 
-export const { auth: proxy } = NextAuth(authConfig);
+export const proxy = auth;
 
 export const config = {
   matcher: ["/dashboard/:path*", "/admin/:path*"],
