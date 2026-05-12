@@ -6,7 +6,6 @@ const nextConfig = {
       { protocol: "https", hostname: "**.supabase.co" },
     ],
   },
-  output: 'standalone',
   serverExternalPackages: ["@prisma/client", "@prisma/adapter-pg", "pg"],
 };
 
