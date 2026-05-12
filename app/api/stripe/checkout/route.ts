@@ -3,11 +3,10 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-04-22.dahlia" as any,
-});
-
 export async function POST(req: Request) {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2026-04-22.dahlia" as any,
+  });
   try {
     const session = await auth();
     if (!session?.user?.id) {
@@ -27,9 +26,9 @@ export async function POST(req: Request) {
 
     // Replace these with actual Price IDs from Stripe Dashboard
     const priceMap: Record<string, string> = {
-      STARTER: "price_1_mock_starter", 
-      PRO: "price_1_mock_pro",         
-      PREMIUM: "price_1_mock_premium", 
+      STARTER: "price_1_mock_starter",
+      PRO: "price_1_mock_pro",
+      PREMIUM: "price_1_mock_premium",
     };
 
     const priceId = priceMap[plan];
